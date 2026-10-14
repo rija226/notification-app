@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<title>Novi zadatak</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 412px; height: 1480px; box-sizing: border-box; position: relative; overflow: hidden; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.text}}; font-family: 'Figtree', system-ui, sans-serif">
+
+<header style="padding: 36px 8px 0; height: 92px; box-sizing: border-box; display: flex; align-items: center; gap: 4px">
+<a href="Main.dc.html" aria-label="Zatvori" style="width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center; color: {{t.text}}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg></a>
+<h1 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 700">
+<sc-if value="{{novi}}" hint-placeholder-val="{{ true }}">Novi zadatak</sc-if>
+<sc-if value="{{uredi}}" hint-placeholder-val="{{ false }}">Uredi zadatak</sc-if>
+</h1>
+</header>
+
+<main style="flex: 1; padding: 12px 16px 0; display: flex; flex-direction: column; gap: 24px">
+
+<div style="position: relative">
+<label for="naziv" style="position: absolute; left: 12px; top: -9px; padding: 0 4px; background: {{t.bg}}; font-size: 13px; line-height: 18px; font-weight: 600; color: {{t.pri}}">Naziv</label>
+<input id="naziv" type="text" value="{{naziv}}" onChange="{{setNaziv}}" style="width: 100%; height: 56px; box-sizing: border-box; padding: 0 16px; border: 2px solid {{t.pri}}; border-radius: 12px; background: transparent; color: {{t.text}}; font-family: inherit; font-size: 17px; outline: none">
+</div>
+
+<section aria-labelledby="h-vrsta" style="display: flex; flex-direction: column; gap: 8px">
+<h2 id="h-vrsta" style="margin: 0; padding: 0 4px; font-size: 15px; line-height: 20px; font-weight: 700">Vrsta</h2>
+<div role="radiogroup" aria-labelledby="h-vrsta" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1px solid {{t.outline}}; border-radius: 24px; overflow: hidden">
+<button type="button" role="radio" aria-checked="{{vs.s.sel}}" onClick="{{pickStalni}}" style="height: 48px; border: 0; border-right: 1px solid {{t.outline}}; background: {{vs.s.bg}}; color: {{vs.s.color}}; font-family: inherit; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 2l3 3-3 3"></path><path d="M4 11V9a4 4 0 0 1 4-4h12"></path><path d="M7 22l-3-3 3-3"></path><path d="M20 13v2a4 4 0 0 1-4 4H4"></path></svg>Stalni</button>
+<button type="button" role="radio" aria-checked="{{vs.p.sel}}" onClick="{{pickPovremeni}}" style="height: 48px; border: 0; background: {{vs.p.bg}}; color: {{vs.p.color}}; font-family: inherit; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"></rect><path d="M16 3v4M8 3v4M3.5 10h17"></path><circle cx="12" cy="15.25" r="1.75" fill="currentColor" stroke="none"></circle></svg>Povremeni</button>
+</div>
+<sc-if value="{{isStalni}}" hint-placeholder-val="{{ true }}">
+<p style="margin: 0; padding: 0 4px; font-size: 14px; line-height: 20px; color: {{t.muted}}">Ponavlja se svaki mjesec. Odrađeno zatvara samo trenutni termin.</p>
+</sc-if>
+<sc-if value="{{isPov}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; padding: 0 4px; font-size: 14px; line-height: 20px; color: {{t.muted}}">Jednom. Kad ga označiš kao odrađen, ide u arhivu.</p>
+</sc-if>
+</section>
+
+<sc-if value="{{isStalni}}" hint-placeholder-val="{{ true }}">
+<section aria-labelledby="h-pon" style="display: flex; flex-direction: column; gap: 8px">
+<h2 id="h-pon" style="margin: 0; padding: 0 4px; font-size: 15px; line-height: 20px; font-weight: 700">Ponavljanje</h2>
+<div role="radiogroup" aria-labelledby="h-pon" style="background: {{t.card}}; border: 1px solid {{t.line}}; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column">
+
+<button type="button" role="radio" aria-checked="{{rd.dan.sel}}" onClick="{{pickDan}}" style="min-height: 60px; padding: 0 16px; border: 0; background: transparent; color: {{t.text}}; font-family: inherit; display: flex; align-items: center; gap: 14px; text-align: left; cursor: pointer">
+<span style="width: 20px; height: 20px; box-sizing: border-box; border-radius: 10px; border: 2px solid {{rd.dan.ring}}; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><span style="width: 10px; height: 10px; border-radius: 5px; background: {{rd.dan.dot}}"></span></span>
+<span style="flex: 1; font-size: 16px; line-height: 22px; font-weight: 600">Određeni dan u mjesecu</span>
+<span style="font-size: 15px; font-weight: 600; color: {{t.pri}}; font-variant-numeric: tabular-nums">{{danLabel}}</span>
+</button>
+
+<sc-if value="{{isDan}}" hint-placeholder-val="{{ true }}">
+<div style="padding: 0 12px 12px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px">
+<sc-for list="{{danCells}}" as="c" hint-placeholder-count="28">
+<button type="button" aria-pressed="{{c.sel}}" aria-label="{{c.aria}}" onClick="{{c.pick}}" style="height: 44px; border: 0; border-radius: 22px; background: {{c.bg}}; color: {{c.color}}; font-family: inherit; font-size: 15px; font-weight: {{c.fw}}; font-variant-numeric: tabular-nums; cursor: pointer">{{c.n}}</button>
+</sc-for>
+</div>
+<p style="margin: 0; padding: 0 4px; font-size: 13px; line-height: 18px; color: {{t.faint}}">Za 29., 30. ili 31. odaberi „Zadnji dan u mjesecu”, jer ih nemaju svi mjeseci.</p>
+</div>
+</sc-if>
+
+<div style="height: 1px; background: {{t.line}}"></div>
+
+<button type="button" role="radio" aria-checked="{{rd.zad.sel}}" onClick="{{pickZadnji}}" style="min-height: 68px; padding: 10px 16px; border: 0; background: transparent; color: {{t.text}}; font-family: inherit; display: flex; align-items: center; gap: 14px; text-align: left; cursor: pointer">
+<span style="width: 20px; height: 20px; box-sizing: border-box; border-radius: 10px; border: 2px solid {{rd.zad.ring}}; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><span style="width: 10px; height: 10px; border-radius: 5px; background: {{rd.zad.dot}}"></span></span>
+<span style="flex: 1; display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 16px; line-height: 22px; font-weight: 600">Zadnji dan u mjesecu</span>
+<span style="font-size: 14px; line-height: 20px; color: {{t.muted}}">28., 29., 30. ili 31., ovisno o mjesecu</span>
+</span>
+</button>
+
+<div style="padding: 12px 16px; background: {{t.c1}}; display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; color: {{t.muted}}">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"></rect><path d="M16 3v4M8 3v4M3.5 10h17"></path></svg>
+<span>Sljedeći termin: <strong style="font-weight: 700; color: {{t.text}}">{{sljedeci}}</strong></span>
+</div>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{isPov}}" hint-placeholder-val="{{ false }}">
+<section aria-labelledby="h-datum" style="display: flex; flex-direction: column; gap: 8px">
+<h2 id="h-datum" style="margin: 0; padding: 0 4px; font-size: 15px; line-height: 20px; font-weight: 700">Datum i vrijeme</h2>
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 120px; gap: 8px">
+<button type="button" style="height: 56px; padding: 0 14px; border: 1px solid {{t.outline}}; border-radius: 12px; background: {{t.card}}; color: {{t.text}}; font-family: inherit; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 10px; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: {{t.muted}}"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"></rect><path d="M16 3v4M8 3v4M3.5 10h17"></path></svg>{{datumLabel}}</button>
+<button type="button" style="height: 56px; padding: 0 14px; border: 1px solid {{t.outline}}; border-radius: 12px; background: {{t.card}}; color: {{t.text}}; font-family: inherit; font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: 10px; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: {{t.muted}}"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>10:00</button>
+</div>
+<div style="background: {{t.card}}; border: 1px solid {{t.line}}; border-radius: 20px; padding: 8px 12px 12px; display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; align-items: center; justify-content: space-between; padding-left: 8px">
+<span style="font-size: 16px; font-weight: 700">studeni 2026.</span>
+<span style="display: flex">
+<button type="button" aria-label="Prethodni mjesec" style="width: 44px; height: 44px; border: 0; border-radius: 22px; background: transparent; color: {{t.muted}}; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button>
+<button type="button" aria-label="Sljedeći mjesec" style="width: 44px; height: 44px; border: 0; border-radius: 22px; background: transparent; color: {{t.muted}}; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg></button>
+</span>
+</div>
+<div aria-hidden="true" style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); text-align: center; font-size: 13px; line-height: 28px; font-weight: 600; color: {{t.faint}}">
+<span>P</span><span>U</span><span>S</span><span>Č</span><span>P</span><span>S</span><span>N</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); row-gap: 2px; justify-items: center">
+<sc-for list="{{cal}}" as="c" hint-placeholder-count="36">
+<button type="button" aria-pressed="{{c.sel}}" onClick="{{c.pick}}" style="width: 44px; height: 44px; box-sizing: border-box; border: {{c.border}}; border-radius: 22px; background: {{c.bg}}; color: {{c.color}}; visibility: {{c.vis}}; font-family: inherit; font-size: 15px; font-weight: {{c.fw}}; font-variant-numeric: tabular-nums; cursor: pointer">{{c.n}}</button>
+</sc-for>
+</div>
+</div>
+</section>
+</sc-if>
+
+<section aria-labelledby="h-rani" style="display: flex; flex-direction: column; gap: 8px">
+<h2 id="h-rani" style="margin: 0; padding: 0 4px; font-size: 15px; line-height: 20px; font-weight: 700">Rani podsjetnik</h2>
+<div style="background: {{t.card}}; border: 1px solid {{t.line}}; border-radius: 20px; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px">
+<div style="display: flex; align-items: center; gap: 4px">
+<button type="button" aria-label="Dan manje" onClick="{{raniMinus}}" style="width: 44px; height: 44px; border: 1px solid {{t.outline}}; border-radius: 22px; background: transparent; color: {{t.text}}; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path></svg></button>
+<span aria-live="polite" style="min-width: 124px; text-align: center; font-size: 16px; line-height: 22px; font-weight: 600">{{raniLabel}}</span>
+<button type="button" aria-label="Dan više" onClick="{{raniPlus}}" style="width: 44px; height: 44px; border: 1px solid {{t.outline}}; border-radius: 22px; background: transparent; color: {{t.text}}; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></button>
+</div>
+<button type="button" style="height: 44px; padding: 0 12px; border: 1px solid {{t.outline}}; border-radius: 12px; background: transparent; color: {{t.text}}; font-family: inherit; font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: 6px; cursor: pointer"><span style="font-weight: 500; color: {{t.muted}}">u</span>09:00</button>
+</div>
+<p style="margin: 0; padding: 0 4px; font-size: 13px; line-height: 18px; color: {{t.faint}}">Od 0 do 7 dana. Na 0 nema ranog podsjetnika.</p>
+</section>
+
+<section aria-labelledby="h-nadan" style="display: flex; flex-direction: column; gap: 8px">
+<h2 id="h-nadan" style="margin: 0; padding: 0 4px; font-size: 15px; line-height: 20px; font-weight: 700">Podsjetnici na dan</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{chips}}" as="ch" hint-placeholder-count="4">
+<span style="height: 44px; padding: 0 2px 0 14px; box-sizing: border-box; border-radius: 12px; background: {{t.priC}}; color: {{t.onPriC}}; display: inline-flex; align-items: center; gap: 2px; font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums">{{ch.v}}<button type="button" aria-label="{{ch.label}}" onClick="{{ch.remove}}" style="width: 36px; height: 36px; border: 0; border-radius: 18px; background: transparent; color: {{t.onPriC}}; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"></path></svg></button></span>
+</sc-for>
+<button type="button" onClick="{{dodaj}}" style="height: 44px; padding: 0 14px 0 10px; box-sizing: border-box; border: 1.5px dashed {{t.outline}}; border-radius: 12px; background: transparent; color: {{t.pri}}; font-family: inherit; font-size: 15px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Dodaj vrijeme</button>
+</div>
+<p style="margin: 0; padding: 0 4px; font-size: 13px; line-height: 18px; color: {{t.faint}}">Na dan roka podsjeća u ova vremena, sve dok ne označiš Odrađeno.</p>
+</section>
+
+<section aria-labelledby="h-kasni" style="display: flex; flex-direction: column; gap: 8px">
+<h2 id="h-kasni" style="margin: 0; padding: 0 4px; font-size: 15px; line-height: 20px; font-weight: 700">Ako kasni, podsjeti svakih</h2>
+<div role="radiogroup" aria-labelledby="h-kasni" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid {{t.outline}}; border-radius: 24px; overflow: hidden">
+<button type="button" role="radio" aria-checked="{{ks.k1.sel}}" onClick="{{k1}}" style="height: 48px; border: 0; border-right: 1px solid {{t.outline}}; background: {{ks.k1.bg}}; color: {{ks.k1.color}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">1 sat</button>
+<button type="button" role="radio" aria-checked="{{ks.k2.sel}}" onClick="{{k2}}" style="height: 48px; border: 0; border-right: 1px solid {{t.outline}}; background: {{ks.k2.bg}}; color: {{ks.k2.color}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">2 sata</button>
+<button type="button" role="radio" aria-checked="{{ks.k4.sel}}" onClick="{{k4}}" style="height: 48px; border: 0; background: {{ks.k4.bg}}; color: {{ks.k4.color}}; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer">4 sata</button>
+</div>
+<p style="margin: 0; padding: 0 4px; font-size: 13px; line-height: 18px; color: {{t.faint}}">Što duže kasni, to češće podsjeća. Tihi sati se poštuju.</p>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 8px">
+<label for="napomena" style="padding: 0 4px; font-size: 15px; line-height: 20px; font-weight: 700">Napomena <span style="font-weight: 500; color: {{t.faint}}">(neobavezno)</span></label>
+<textarea id="napomena" placeholder="Dodaj bilješku" style="height: 96px; box-sizing: border-box; padding: 14px 16px; border: 1px solid {{t.outline}}; border-radius: 12px; background: {{t.card}}; color: {{t.text}}; font-family: inherit; font-size: 16px; line-height: 22px; resize: none"></textarea>
+</section>
+
+</main>
+
+<div style="flex-shrink: 0; padding: 16px 16px 24px">
+<a href="Main.dc.html" style="height: 56px; border-radius: 28px; background: {{t.pri}}; color: {{t.onPri}}; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700; text-decoration: none">
+<sc-if value="{{novi}}" hint-placeholder-val="{{ true }}">Spremi zadatak</sc-if>
+<sc-if value="{{uredi}}" hint-placeholder-val="{{ false }}">Spremi promjene</sc-if>
+</a>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false,"section":"Tema"},"vrsta":{"editor":"enum","options":["stalni","povremeni"],"default":"stalni","section":"Stanje"},"uredi":{"editor":"boolean","default":false,"section":"Stanje"},"$preview":{"width":412,"height":1480}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var L = {bg:'#F5F6F8',card:'#FFFFFF',c1:'#EDEFF3',c2:'#E2E6EC',line:'#DDE1E7',outline:'#B9BEC8',text:'#171A1F',muted:'#4A505B',faint:'#666C77',pri:'#2E55A5',onPri:'#FFFFFF',priC:'#DCE4F7',onPriC:'#132F69',red:'#B3261E',redS:'#B3261E',onRedS:'#FFFFFF',redCard:'#FDF2F0',redLine:'#F1C9C3',redC:'#FBE1DD',onRedC:'#7A1913',amb:'#865700',ambDot:'#E09B00',ambLine:'#EED9A4',ambC:'#FFE8AE',onAmbC:'#563900',neuC:'#E8EBEF',onNeuC:'#3E444F',grn:'#1C773D',grnS:'#1C773D',onGrnS:'#FFFFFF',grnC:'#D5F0DC',onGrnC:'#0F4F27',scrim:'rgba(15,17,21,0.5)',nav:'#ECEFF3',navInd:'#D5DEF4',shade:'#D9DDE4',sheet:'#FFFFFF',noti:'#F8F9FB',shadow:'rgba(20,24,32,0.16)'};
+    var D = {bg:'#0F1115',card:'#191C21',c1:'#22262C',c2:'#2C3138',line:'#2F343C',outline:'#4A505A',text:'#E3E6EB',muted:'#B0B6C0',faint:'#8D94A0',pri:'#ADC4FF',onPri:'#0D2860',priC:'#27427D',onPriC:'#DAE3FF',red:'#FFB4AB',redS:'#FFB4AB',onRedS:'#5C1210',redCard:'#241819',redLine:'#55302C',redC:'#4F1D19',onRedC:'#FFD9D3',amb:'#F0C25A',ambDot:'#F0C25A',ambLine:'#4A3C17',ambC:'#453300',onAmbC:'#FFE1A0',neuC:'#2A2F36',onNeuC:'#C4C9D2',grn:'#8FD5A4',grnS:'#8FD5A4',onGrnS:'#0B3A1D',grnC:'#163D24',onGrnC:'#BCEDCA',scrim:'rgba(0,0,0,0.62)',nav:'#16191D',navInd:'#2B4170',shade:'#08090B',sheet:'#1D2026',noti:'#1F2228',shadow:'rgba(0,0,0,0.5)'};
+    var self = this;
+    var s = this.state || {};
+    var dark = this.props.dark ?? false;
+    var t = dark ? D : L;
+    var uredi = this.props.uredi ?? false;
+    var vrsta = s.vrsta || this.props.vrsta || 'stalni';
+    var pravilo = s.pravilo || 'dan';
+    var dan = s.dan || 15;
+    var rani = (s.rani != null) ? s.rani : 2;
+    var kasni = s.kasni || 2;
+    var vremena = s.vremena || ['09:00', '13:00', '17:00', '20:00'];
+    var datum = s.datum || 3;
+    var naziv = (s.naziv != null) ? s.naziv : (uredi ? 'Nazvati servis za klimu' : 'Platiti režije');
+
+    var dani = ['ned', 'pon', 'uto', 'sri', 'čet', 'pet', 'sub'];
+    var fmt = function (d, m) { return dani[new Date(2026, m - 1, d).getDay()] + ', ' + d + '. ' + m + '.'; };
+    var sljedeci = pravilo === 'zadnji' ? fmt(30, 11) : (dan >= 5 ? fmt(dan, 11) : fmt(dan, 12));
+
+    var seg = function (on) { return { sel: on ? 'true' : 'false', bg: on ? t.priC : 'transparent', color: on ? t.onPriC : t.text }; };
+    var radio = function (on) { return { sel: on ? 'true' : 'false', ring: on ? t.pri : t.outline, dot: on ? t.pri : 'transparent' }; };
+
+    var danCells = [];
+    for (var i = 1; i <= 28; i++) {
+      (function (d) {
+        var on = d === dan && pravilo === 'dan';
+        danCells.push({ n: String(d), aria: 'Svakog ' + d + '.', sel: on ? 'true' : 'false', bg: on ? t.pri : 'transparent', color: on ? t.onPri : t.text, fw: on ? '700' : '500', pick: function () { self.setState({ dan: d, pravilo: 'dan' }); } });
+      })(i);
+    }
+
+    var cal = [];
+    for (var b = 0; b < 6; b++) {
+      cal.push({ n: '', sel: 'false', vis: 'hidden', bg: 'transparent', color: t.text, border: '0', fw: '500', pick: function () {} });
+    }
+    for (var j = 1; j <= 30; j++) {
+      (function (d) {
+        var on = d === datum;
+        var danas = d === 5;
+        cal.push({ n: String(d), sel: on ? 'true' : 'false', vis: 'visible', bg: on ? t.pri : 'transparent', color: on ? t.onPri : (danas ? t.pri : t.text), border: (danas && !on) ? ('1.5px solid ' + t.pri) : '1.5px solid transparent', fw: (on || danas) ? '700' : '500', pick: function () { self.setState({ datum: d }); } });
+      })(j);
+    }
+
+    var chips = vremena.map(function (v) {
+      return { v: v, label: 'Ukloni ' + v, remove: function () { self.setState({ vremena: vremena.filter(function (x) { return x !== v; }) }); } };
+    });
+
+    return {
+      t: t,
+      novi: !uredi,
+      uredi: uredi,
+      naziv: naziv,
+      setNaziv: function (e) { self.setState({ naziv: e.target.value }); },
+      isStalni: vrsta === 'stalni',
+      isPov: vrsta === 'povremeni',
+      vs: { s: seg(vrsta === 'stalni'), p: seg(vrsta === 'povremeni') },
+      pickStalni: function () { self.setState({ vrsta: 'stalni' }); },
+      pickPovremeni: function () { self.setState({ vrsta: 'povremeni' }); },
+      rd: { dan: radio(pravilo === 'dan'), zad: radio(pravilo === 'zadnji') },
+      pickDan: function () { self.setState({ pravilo: 'dan' }); },
+      pickZadnji: function () { self.setState({ pravilo: 'zadnji' }); },
+      isDan: pravilo === 'dan',
+      danLabel: pravilo === 'dan' ? ('Svakog ' + dan + '.') : '',
+      danCells: danCells,
+      sljedeci: sljedeci,
+      datumLabel: fmt(datum, 11) + ' 2026.',
+      cal: cal,
+      raniLabel: rani === 0 ? 'Bez ranog' : (rani === 1 ? '1 dan prije' : rani + ' dana prije'),
+      raniMinus: function () { self.setState({ rani: Math.max(0, rani - 1) }); },
+      raniPlus: function () { self.setState({ rani: Math.min(7, rani + 1) }); },
+      chips: chips,
+      dodaj: function () {
+        var pool = ['11:00', '15:00', '19:00', '21:00', '08:00', '10:00', '12:00'];
+        var n = pool.filter(function (p) { return vremena.indexOf(p) === -1; })[0];
+        if (n) { self.setState({ vremena: vremena.concat([n]).sort() }); }
+      },
+      ks: { k1: seg(kasni === 1), k2: seg(kasni === 2), k4: seg(kasni === 4) },
+      k1: function () { self.setState({ kasni: 1 }); },
+      k2: function () { self.setState({ kasni: 2 }); },
+      k4: function () { self.setState({ kasni: 4 }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<title>Obavijest</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 412px; height: 320px; box-sizing: border-box; padding: 0 10px; overflow: hidden; display: flex; flex-direction: column; justify-content: center; background: {{t.shade}}; color: {{t.text}}; font-family: 'Figtree', system-ui, sans-serif">
+
+<article style="background: {{t.noti}}; border-radius: 26px; padding: 16px 16px 14px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 2px 6px {{t.shadow}}">
+
+<div style="display: flex; align-items: center; gap: 8px; font-size: 13px; line-height: 18px">
+<span style="width: 28px; height: 28px; border-radius: 14px; background: {{v.icoBg}}; color: {{v.icoFg}}; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.7 21a2 2 0 0 1-3.4 0"></path></svg></span>
+<span style="font-weight: 600">Podsjetnik</span>
+<span style="color: {{t.faint}}">· {{v.kad}}</span>
+<sc-if value="{{v.stalna}}" hint-placeholder-val="{{ false }}">
+<span style="margin-left: 4px; display: inline-flex; align-items: center; gap: 3px; font-size: 12px; font-weight: 600; color: {{t.red}}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17v5M9 3h6l-1 6 3 3v2H7v-2l3-3-1-6Z"></path></svg>Stalna</span>
+</sc-if>
+<span aria-hidden="true" style="margin-left: auto; width: 28px; height: 28px; border-radius: 14px; background: {{t.c1}}; color: {{t.muted}}; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"></path></svg></span>
+</div>
+
+<p style="margin: 4px 0 0; font-size: 16px; line-height: 22px; font-weight: 700"><span style="color: {{v.prefixColor}}">{{v.prefix}}</span> Očitati struju</p>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: {{t.muted}}">{{v.tekst}}</p>
+
+<div style="display: flex; gap: 8px; margin-top: 8px">
+<button type="button" style="height: 40px; padding: 0 16px 0 12px; border: 0; border-radius: 20px; background: {{v.btnBg}}; color: {{v.btnFg}}; font-family: inherit; font-size: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>Odrađeno</button>
+<button type="button" style="height: 40px; padding: 0 16px 0 12px; border: 0; border-radius: 20px; background: {{t.c1}}; color: {{t.text}}; font-family: inherit; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>Odgodi 1 sat</button>
+</div>
+
+</article>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false,"section":"Tema"},"vrsta":{"editor":"enum","options":["rano","danas","kasni"],"default":"rano","section":"Stanje"},"$preview":{"width":412,"height":320}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var L = {bg:'#F5F6F8',card:'#FFFFFF',c1:'#EDEFF3',c2:'#E2E6EC',line:'#DDE1E7',outline:'#B9BEC8',text:'#171A1F',muted:'#4A505B',faint:'#666C77',pri:'#2E55A5',onPri:'#FFFFFF',priC:'#DCE4F7',onPriC:'#132F69',red:'#B3261E',redS:'#B3261E',onRedS:'#FFFFFF',redCard:'#FDF2F0',redLine:'#F1C9C3',redC:'#FBE1DD',onRedC:'#7A1913',amb:'#865700',ambDot:'#E09B00',ambLine:'#EED9A4',ambC:'#FFE8AE',onAmbC:'#563900',neuC:'#E8EBEF',onNeuC:'#3E444F',grn:'#1C773D',grnS:'#1C773D',onGrnS:'#FFFFFF',grnC:'#D5F0DC',onGrnC:'#0F4F27',scrim:'rgba(15,17,21,0.5)',nav:'#ECEFF3',navInd:'#D5DEF4',shade:'#D9DDE4',sheet:'#FFFFFF',noti:'#F8F9FB',shadow:'rgba(20,24,32,0.16)'};
+    var D = {bg:'#0F1115',card:'#191C21',c1:'#22262C',c2:'#2C3138',line:'#2F343C',outline:'#4A505A',text:'#E3E6EB',muted:'#B0B6C0',faint:'#8D94A0',pri:'#ADC4FF',onPri:'#0D2860',priC:'#27427D',onPriC:'#DAE3FF',red:'#FFB4AB',redS:'#FFB4AB',onRedS:'#5C1210',redCard:'#241819',redLine:'#55302C',redC:'#4F1D19',onRedC:'#FFD9D3',amb:'#F0C25A',ambDot:'#F0C25A',ambLine:'#4A3C17',ambC:'#453300',onAmbC:'#FFE1A0',neuC:'#2A2F36',onNeuC:'#C4C9D2',grn:'#8FD5A4',grnS:'#8FD5A4',onGrnS:'#0B3A1D',grnC:'#163D24',onGrnC:'#BCEDCA',scrim:'rgba(0,0,0,0.62)',nav:'#16191D',navInd:'#2B4170',shade:'#08090B',sheet:'#1D2026',noti:'#1F2228',shadow:'rgba(0,0,0,0.5)'};
+    var dark = this.props.dark ?? false;
+    var t = dark ? D : L;
+    var vrsta = this.props.vrsta || 'rano';
+    var V = {
+      rano: { kad: 'čet 09:00', prefix: 'Za 2 dana:', prefixColor: t.text, tekst: 'Rok je subota, 31. 10. (zadnji dan u mjesecu).', icoBg: t.pri, icoFg: t.onPri, btnBg: t.grnC, btnFg: t.onGrnC, stalna: false },
+      danas: { kad: 'sada', prefix: 'Danas:', prefixColor: t.amb, tekst: 'Rok je danas. Sljedeći podsjetnik u 13:00 ako ne označiš Odrađeno.', icoBg: t.ambDot, icoFg: '#2B1D00', btnBg: t.grnC, btnFg: t.onGrnC, stalna: false },
+      kasni: { kad: 'sada', prefix: 'Kasni 1 dan:', prefixColor: t.red, tekst: 'Rok je bio 31. 10. Podsjećam svaka 2 sata dok ne označiš Odrađeno.', icoBg: t.redS, icoFg: t.onRedS, btnBg: t.grnC, btnFg: t.onGrnC, stalna: true }
+    };
+    return { t: t, v: V[vrsta] || V.rano };
+  }
+}
+</script>
+</body>
+</html>

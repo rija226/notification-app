@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Podsjetnik: all UI copy (Croatian). Place in app/src/main/res/values/strings.xml.
+     Croatian plurals use quantities one / few / other. -->
+<resources>
+
+    <string name="app_name">Podsjetnik</string>
+
+    <!-- Navigation -->
+    <string name="nav_danas">Danas</string>
+    <string name="nav_svi_zadaci">Svi zadaci</string>
+    <string name="nav_postavke">Postavke</string>
+    <string name="fab_novi_zadatak">Novi zadatak</string>
+    <string name="cd_natrag">Natrag</string>
+    <string name="cd_zatvori">Zatvori</string>
+    <string name="cd_uredi_zadatak">Uredi zadatak</string>
+
+    <!-- Task types and rules -->
+    <string name="tip_stalni">Stalni</string>
+    <string name="tip_povremeni">Povremeni</string>
+    <string name="cd_tip_stalni">Stalni zadatak</string>
+    <string name="cd_tip_povremeni">Povremeni zadatak</string>
+    <string name="pravilo_svakog_dana">Svakog %1$d. u mjesecu</string>
+    <string name="pravilo_zadnji_dan">Zadnji dan u mjesecu</string>
+    <string name="meta_pravilo_datum">%1$s · %2$s</string>
+    <string name="meta_datum_vrijeme">%1$s u %2$s</string>
+
+    <!-- Status chips -->
+    <plurals name="chip_kasni">
+        <item quantity="one">Kasni %d dan</item>
+        <item quantity="few">Kasni %d dana</item>
+        <item quantity="other">Kasni %d dana</item>
+    </plurals>
+    <string name="chip_danas">Danas</string>
+    <plurals name="chip_za">
+        <item quantity="one">Za %d dan</item>
+        <item quantity="few">Za %d dana</item>
+        <item quantity="other">Za %d dana</item>
+    </plurals>
+    <string name="chip_odradjeno">Odrađeno</string>
+
+    <!-- Danas -->
+    <string name="danas_naslov">Danas</string>
+    <plurals name="danas_sazetak_kasni">
+        <item quantity="one">%d kasni</item>
+        <item quantity="few">%d kasne</item>
+        <item quantity="other">%d kasni</item>
+    </plurals>
+    <string name="danas_sazetak_danas">%d za danas</string>
+    <string name="danas_sazetak_uskoro">%d uskoro</string>
+    <string name="sekcija_zakasnjelo">Zakašnjelo</string>
+    <string name="sekcija_danas">Danas</string>
+    <string name="sekcija_uskoro">Uskoro</string>
+    <string name="sekcija_uskoro_opis">sljedećih 7 dana</string>
+    <string name="akcija_odradjeno">Odrađeno</string>
+    <string name="cd_sljedeci_podsjetnik">Sljedeći podsjetnik: %1$s</string>
+    <string name="prazno_danas_naslov">Sve je odrađeno</string>
+    <string name="prazno_danas_tekst">Ništa ne kasni i ništa nije za danas. Javit ću se kad dođe vrijeme.</string>
+    <string name="prazno_sljedece">Sljedeće</string>
+    <string name="banner_dozvole">Podsjetnici možda neće stići na vrijeme.</string>
+    <string name="premjesteno_u_arhivu">Premješteno u arhivu</string>
+
+    <!-- Svi zadaci -->
+    <string name="svi_naslov">Svi zadaci</string>
+    <string name="tab_stalni">Stalni</string>
+    <string name="tab_povremeni">Povremeni</string>
+    <string name="tab_arhiva">Arhiva</string>
+    <string name="rok_datum">rok %1$s</string>
+    <string name="prazno_arhiva_naslov">Arhiva je prazna</string>
+    <string name="prazno_arhiva_tekst">Kad povremeni zadatak označiš kao odrađen, spremit će se ovdje.</string>
+    <string name="prazno_stalni_naslov">Nema stalnih zadataka</string>
+    <string name="prazno_povremeni_naslov">Nema povremenih zadataka</string>
+    <string name="arhiva_odradjeno_datum">Odrađeno %1$s</string>
+    <string name="vrati_iz_arhive">Vrati</string>
+
+    <!-- Detalji -->
+    <string name="detalji_tip_pravilo">Stalni · %1$s</string>
+    <string name="detalji_tip_povremeni">Povremeni · %1$s</string>
+    <string name="detalji_sljedeci_podsjetnik">sljedeći podsjetnik u %1$s</string>
+    <string name="detalji_trenutni_rok">Trenutni rok</string>
+    <string name="detalji_rok">Rok</string>
+    <string name="detalji_sljedeci_termin">Sljedeći termin</string>
+    <string name="detalji_raspored">Raspored podsjetnika</string>
+    <string name="rani_podsjetnik">Rani podsjetnik</string>
+    <plurals name="rani_opis">
+        <item quantity="one">%1$d dan prije, u %2$s</item>
+        <item quantity="few">%1$d dana prije, u %2$s</item>
+        <item quantity="other">%1$d dana prije, u %2$s</item>
+    </plurals>
+    <string name="rani_iskljucen">Isključen</string>
+    <string name="rani_poslan">Poslan %1$s</string>
+    <string name="rani_planiran">%1$s u %2$s</string>
+    <string name="na_dan_roka">Na dan roka</string>
+    <string name="na_dan_sve_poslano">sve poslano %1$s</string>
+    <string name="ako_kasni">Ako kasni</string>
+    <string name="ako_kasni_opis">%1$s, s vremenom češće</string>
+    <string name="ako_kasni_sada">Sada %1$s · sljedeći u %2$s</string>
+    <string name="interval_1h">svaki sat</string>
+    <string name="interval_2h">svaka 2 sata</string>
+    <string name="interval_4h">svaka 4 sata</string>
+    <string name="tihi_sati">Tihi sati</string>
+    <string name="tihi_opis">%1$s – %2$s, bez obavijesti</string>
+    <string name="napomena_naslov">Napomena</string>
+    <string name="zadnje_odradjeno">Zadnji put odrađeno</string>
+    <string name="zadnje_datum_vrijeme">%1$s u %2$s</string>
+    <string name="zadnje_na_vrijeme">za rok %1$s, na vrijeme</string>
+    <plurals name="zadnje_kasnije">
+        <item quantity="one">za rok %2$s, %1$d dan kasnije</item>
+        <item quantity="few">za rok %2$s, %1$d dana kasnije</item>
+        <item quantity="other">za rok %2$s, %1$d dana kasnije</item>
+    </plurals>
+    <string name="obrisi_zadatak">Obriši zadatak</string>
+    <string name="obrisi_potvrda_naslov">Obrisati zadatak?</string>
+    <string name="obrisi_potvrda_tekst">„%1$s” i svi njegovi podsjetnici bit će obrisani.</string>
+    <string name="obrisi">Obriši</string>
+    <string name="odustani">Odustani</string>
+    <string name="odgodi">Odgodi</string>
+
+    <!-- Odgodi bottom sheet -->
+    <string name="odgodi_naslov">Odgodi podsjetnik</string>
+    <string name="odgodi_podnaslov">%1$s · %2$s</string>
+    <string name="odgodi_1h">1 sat</string>
+    <string name="odgodi_veceras">Večeras</string>
+    <string name="odgodi_sutra">Sutra ujutro</string>
+    <string name="odgodi_danas_u">Danas u %1$s</string>
+    <string name="odgodi_napomena_kasni">Zadatak i dalje kasni. Odgoda samo utišava podsjetnike do odabranog vremena.</string>
+    <string name="odgodi_napomena">Rok se ne mijenja. Odgoda samo utišava podsjetnike do odabranog vremena.</string>
+
+    <!-- Odrađeno confirmation -->
+    <string name="odradjeno_naslov">Odrađeno</string>
+    <string name="sljedeci_termin">Sljedeći termin</string>
+    <string name="sljedeci_termin_opis">%1$s · %2$s</string>
+    <string name="rani_podsjetnik_kad">Rani podsjetnik %1$s u %2$s</string>
+    <string name="ponisti">Poništi</string>
+    <string name="u_redu">U redu</string>
+
+    <!-- Novi / Uredi zadatak -->
+    <string name="novi_zadatak">Novi zadatak</string>
+    <string name="uredi_zadatak">Uredi zadatak</string>
+    <string name="polje_naziv">Naziv</string>
+    <string name="greska_naziv">Upiši naziv zadatka.</string>
+    <string name="polje_vrsta">Vrsta</string>
+    <string name="vrsta_stalni_opis">Ponavlja se svaki mjesec. Odrađeno zatvara samo trenutni termin.</string>
+    <string name="vrsta_povremeni_opis">Jednom. Kad ga označiš kao odrađen, ide u arhivu.</string>
+    <string name="ponavljanje">Ponavljanje</string>
+    <string name="odredjeni_dan">Određeni dan u mjesecu</string>
+    <string name="svakog_dan_kratko">Svakog %1$d.</string>
+    <string name="cd_svakog_dan">Svakog %1$d. u mjesecu</string>
+    <string name="dan_napomena">Za 29., 30. ili 31. odaberi „Zadnji dan u mjesecu”, jer ih nemaju svi mjeseci.</string>
+    <string name="zadnji_dan">Zadnji dan u mjesecu</string>
+    <string name="zadnji_dan_opis">28., 29., 30. ili 31., ovisno o mjesecu</string>
+    <string name="sljedeci_termin_label">Sljedeći termin: %1$s</string>
+    <string name="datum_i_vrijeme">Datum i vrijeme</string>
+    <string name="cd_prethodni_mjesec">Prethodni mjesec</string>
+    <string name="cd_sljedeci_mjesec">Sljedeći mjesec</string>
+    <string name="rani_bez">Bez ranog</string>
+    <plurals name="rani_dana_prije">
+        <item quantity="one">%d dan prije</item>
+        <item quantity="few">%d dana prije</item>
+        <item quantity="other">%d dana prije</item>
+    </plurals>
+    <string name="rani_u_vrijeme">u %1$s</string>
+    <string name="rani_napomena">Od 0 do 7 dana. Na 0 nema ranog podsjetnika.</string>
+    <string name="cd_dan_manje">Dan manje</string>
+    <string name="cd_dan_vise">Dan više</string>
+    <string name="podsjetnici_na_dan">Podsjetnici na dan</string>
+    <string name="dodaj_vrijeme">Dodaj vrijeme</string>
+    <string name="cd_ukloni_vrijeme">Ukloni %1$s</string>
+    <string name="na_dan_napomena">Na dan roka podsjeća u ova vremena, sve dok ne označiš Odrađeno.</string>
+    <string name="ako_kasni_svakih">Ako kasni, podsjeti svakih</string>
+    <string name="seg_1h">1 sat</string>
+    <string name="seg_2h">2 sata</string>
+    <string name="seg_4h">4 sata</string>
+    <string name="ako_kasni_napomena">Što duže kasni, to češće podsjeća. Tihi sati se poštuju.</string>
+    <string name="napomena">Napomena</string>
+    <string name="neobavezno">(neobavezno)</string>
+    <string name="napomena_placeholder">Dodaj bilješku</string>
+    <string name="spremi_zadatak">Spremi zadatak</string>
+    <string name="spremi_promjene">Spremi promjene</string>
+
+    <!-- Postavke -->
+    <string name="postavke_naslov">Postavke</string>
+    <string name="dozvole">Dozvole</string>
+    <plurals name="dozvole_paznja">
+        <item quantity="one">%d traži pažnju</item>
+        <item quantity="few">%d traže pažnju</item>
+        <item quantity="other">%d traži pažnju</item>
+    </plurals>
+    <string name="dozvola_obavijesti">Obavijesti</string>
+    <string name="dozvola_obavijesti_ok">Uključene</string>
+    <string name="dozvola_obavijesti_ne">Isključene. Podsjetnik ti ne može ništa javiti.</string>
+    <string name="dozvola_alarmi">Točni alarmi</string>
+    <string name="dozvola_alarmi_ok">Dopušteni</string>
+    <string name="dozvola_alarmi_ne">Nisu dopušteni. Podsjetnici mogu kasniti.</string>
+    <string name="dozvola_baterija">Optimizacija baterije</string>
+    <string name="dozvola_baterija_ok">Aplikacija je izuzeta</string>
+    <string name="dozvola_baterija_ne">Aplikacija nije izuzeta. Podsjetnici mogu kasniti ili izostati.</string>
+    <string name="status_u_redu">U redu</string>
+    <string name="popravi">Popravi</string>
+    <string name="tihi_sati_naslov">Tihi sati</string>
+    <string name="tihi_prekidac">Bez obavijesti noću</string>
+    <string name="tihi_ukljuceno">Uključeno, svaku noć</string>
+    <string name="tihi_iskljuceno">Isključeno</string>
+    <string name="tihi_od">Od</string>
+    <string name="tihi_do">Do</string>
+    <string name="tihi_napomena">Podsjetnici koji padnu u tihe sate stižu u %1$s, zajedno.</string>
+    <string name="zadano_naslov">Zadano za nove zadatke</string>
+    <string name="sigurnosna_kopija">Sigurnosna kopija</string>
+    <string name="izvezi">Izvezi podatke</string>
+    <string name="izvezi_opis">Spremi sve zadatke u datoteku</string>
+    <string name="uvezi">Uvezi podatke</string>
+    <string name="uvezi_opis">Vrati zadatke iz datoteke</string>
+    <string name="uvezi_potvrda_naslov">Zamijeniti sve podatke?</string>
+    <string name="uvezi_potvrda_tekst">Uvoz briše postojeće zadatke i postavke i zamjenjuje ih onima iz datoteke.</string>
+    <string name="uvezi_potvrda_gumb">Uvezi</string>
+    <string name="izvoz_uspjeh">Podaci su izvezeni.</string>
+    <string name="uvoz_uspjeh">Podaci su uvezeni.</string>
+    <string name="uvoz_greska">Datoteka nije ispravna sigurnosna kopija.</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_korak">%1$d od %2$d</string>
+    <string name="kasnije">Kasnije</string>
+    <string name="ob1_naslov">Dopusti obavijesti</string>
+    <string name="ob1_tekst">Podsjetnik ti javlja kad nešto treba napraviti i ponavlja to dok ne označiš Odrađeno. Bez obavijesti ne može ti ništa javiti.</string>
+    <string name="ob1_gumb">Dopusti obavijesti</string>
+    <string name="ob1_primjer_naslov">Danas: Očitati struju</string>
+    <string name="ob1_primjer_tekst">Javit ću se opet u 13:00.</string>
+    <string name="ob2_naslov">Uključi točne alarme</string>
+    <string name="ob2_tekst">Radi štednje baterije Android zna odgoditi podsjetnike. S točnim alarmima podsjetnik za 09:00 stiže u 09:00.</string>
+    <string name="ob2_napomena">Otvorit će se postavke sustava. Uključi „Alarmi i podsjetnici”.</string>
+    <string name="ob2_gumb">Otvori postavke</string>
+    <string name="ob2_bez">Bez točnih alarma</string>
+    <string name="ob2_bez_opis">stiže kad Android odluči</string>
+    <string name="ob2_sa">S točnim alarmima</string>
+    <string name="ob2_sa_opis">stiže točno u 09:00</string>
+    <string name="ob3_naslov">Izuzmi iz štednje baterije</string>
+    <string name="ob3_tekst">Neki telefoni gase aplikacije u pozadini, pa zakašnjeli zadaci prestanu podsjećati. Kad je Podsjetnik izuzet, javlja se i kad telefon dugo miruje.</string>
+    <!-- O6: use ob3_napomena_postavke with the settings route, ob3_napomena_dijalog with the direct dialog -->
+    <string name="ob3_napomena_postavke">U postavkama odaberi „Neograničeno”.</string>
+    <string name="ob3_napomena_dijalog">Pojavit će se pitanje sustava. Odaberi „Dopusti”.</string>
+    <string name="ob3_gumb">Izuzmi iz optimizacije</string>
+
+    <!-- Notifications -->
+    <string name="kanal_rani">Rani podsjetnici</string>
+    <string name="kanal_rani_opis">Javlja nekoliko dana prije roka.</string>
+    <string name="kanal_na_dan">Podsjetnici na dan</string>
+    <string name="kanal_na_dan_opis">Ponavlja se na dan roka dok ne označiš Odrađeno.</string>
+    <string name="kanal_kasni">Zakašnjeli zadaci</string>
+    <string name="kanal_kasni_opis">Stalna obavijest dok zadatak kasni.</string>
+    <plurals name="notif_rano_naslov">
+        <item quantity="one">Za %1$d dan: %2$s</item>
+        <item quantity="few">Za %1$d dana: %2$s</item>
+        <item quantity="other">Za %1$d dana: %2$s</item>
+    </plurals>
+    <string name="notif_rano_tekst">Rok je %1$s.</string>
+    <string name="notif_rano_tekst_pravilo">Rok je %1$s (%2$s).</string>
+    <string name="notif_danas_naslov">Danas: %1$s</string>
+    <string name="notif_danas_tekst">Rok je danas. Sljedeći podsjetnik u %1$s ako ne označiš Odrađeno.</string>
+    <string name="notif_danas_tekst_zadnji">Rok je danas.</string>
+    <plurals name="notif_kasni_naslov">
+        <item quantity="one">Kasni %1$d dan: %2$s</item>
+        <item quantity="few">Kasni %1$d dana: %2$s</item>
+        <item quantity="other">Kasni %1$d dana: %2$s</item>
+    </plurals>
+    <string name="notif_kasni_tekst">Rok je bio %1$s. Podsjećam %2$s dok ne označiš Odrađeno.</string>
+    <string name="notif_akcija_odradjeno">Odrađeno</string>
+    <string name="notif_akcija_odgodi">Odgodi 1 sat</string>
+
+    <!-- Dates (custom formatter) -->
+    <string-array name="dani_kratko">
+        <item>pon</item>
+        <item>uto</item>
+        <item>sri</item>
+        <item>čet</item>
+        <item>pet</item>
+        <item>sub</item>
+        <item>ned</item>
+    </string-array>
+    <string-array name="dani_dugo">
+        <item>ponedjeljak</item>
+        <item>utorak</item>
+        <item>srijeda</item>
+        <item>četvrtak</item>
+        <item>petak</item>
+        <item>subota</item>
+        <item>nedjelja</item>
+    </string-array>
+    <string-array name="mjeseci_genitiv">
+        <item>siječnja</item>
+        <item>veljače</item>
+        <item>ožujka</item>
+        <item>travnja</item>
+        <item>svibnja</item>
+        <item>lipnja</item>
+        <item>srpnja</item>
+        <item>kolovoza</item>
+        <item>rujna</item>
+        <item>listopada</item>
+        <item>studenoga</item>
+        <item>prosinca</item>
+    </string-array>
+
+</resources>

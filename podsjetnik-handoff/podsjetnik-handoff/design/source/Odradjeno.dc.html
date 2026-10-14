@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<title>Odrađeno</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; position: relative; overflow: hidden; background: {{t.bg}}; color: {{t.text}}; font-family: 'Figtree', system-ui, sans-serif">
+
+<div aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 412px; height: 915px">
+<dc-import name="Main" dark="{{dark}}" hint-size="412px,915px"></dc-import>
+</div>
+<div style="position: absolute; left: 0; top: 0; width: 412px; height: 915px; background: {{t.scrim}}"></div>
+
+<section role="dialog" aria-modal="true" aria-labelledby="gotovo-naslov" style="position: absolute; left: 28px; right: 28px; top: 210px; background: {{t.sheet}}; border-radius: 28px; padding: 28px 20px 16px; display: flex; flex-direction: column; align-items: center; gap: 16px; box-shadow: 0 12px 32px {{t.shadow}}">
+<span style="width: 80px; height: 80px; border-radius: 40px; background: {{t.grnC}}; color: {{t.grn}}; display: flex; align-items: center; justify-content: center"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span>
+
+<div style="display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center">
+<h2 id="gotovo-naslov" style="margin: 0; font-size: 24px; line-height: 30px; font-weight: 700">Odrađeno</h2>
+<p style="margin: 0; font-size: 16px; line-height: 22px; color: {{t.muted}}">Očitati struju</p>
+</div>
+
+<div style="align-self: stretch; padding: 14px 16px; border-radius: 18px; background: {{t.c1}}; display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 13px; line-height: 18px; font-weight: 600; color: {{t.faint}}">Sljedeći termin</span>
+<span style="font-size: 32px; line-height: 38px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.01em">30. 11.</span>
+<span style="font-size: 14px; line-height: 20px; color: {{t.muted}}">ponedjeljak · zadnji dan u mjesecu</span>
+<span style="margin-top: 8px; display: flex; align-items: center; gap: 6px; font-size: 13px; line-height: 18px; font-weight: 500; color: {{t.faint}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.7 21a2 2 0 0 1-3.4 0"></path></svg>Rani podsjetnik 28. 11. u 09:00</span>
+</div>
+
+<div style="align-self: stretch; display: flex; align-items: center; justify-content: space-between; gap: 8px">
+<a href="Main.dc.html" style="height: 48px; padding: 0 14px 0 10px; border-radius: 24px; display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 600; text-decoration: none; color: {{t.pri}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14L4 9l5-5"></path><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"></path></svg>Poništi</a>
+<a href="Main.dc.html" style="height: 48px; padding: 0 28px; border-radius: 24px; background: {{t.pri}}; color: {{t.onPri}}; display: flex; align-items: center; font-size: 16px; font-weight: 600; text-decoration: none">U redu</a>
+</div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false,"section":"Tema"},"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var L = {bg:'#F5F6F8',card:'#FFFFFF',c1:'#EDEFF3',c2:'#E2E6EC',line:'#DDE1E7',outline:'#B9BEC8',text:'#171A1F',muted:'#4A505B',faint:'#666C77',pri:'#2E55A5',onPri:'#FFFFFF',priC:'#DCE4F7',onPriC:'#132F69',red:'#B3261E',redS:'#B3261E',onRedS:'#FFFFFF',redCard:'#FDF2F0',redLine:'#F1C9C3',redC:'#FBE1DD',onRedC:'#7A1913',amb:'#865700',ambDot:'#E09B00',ambLine:'#EED9A4',ambC:'#FFE8AE',onAmbC:'#563900',neuC:'#E8EBEF',onNeuC:'#3E444F',grn:'#1C773D',grnS:'#1C773D',onGrnS:'#FFFFFF',grnC:'#D5F0DC',onGrnC:'#0F4F27',scrim:'rgba(15,17,21,0.5)',nav:'#ECEFF3',navInd:'#D5DEF4',shade:'#D9DDE4',sheet:'#FFFFFF',noti:'#F8F9FB',shadow:'rgba(20,24,32,0.16)'};
+    var D = {bg:'#0F1115',card:'#191C21',c1:'#22262C',c2:'#2C3138',line:'#2F343C',outline:'#4A505A',text:'#E3E6EB',muted:'#B0B6C0',faint:'#8D94A0',pri:'#ADC4FF',onPri:'#0D2860',priC:'#27427D',onPriC:'#DAE3FF',red:'#FFB4AB',redS:'#FFB4AB',onRedS:'#5C1210',redCard:'#241819',redLine:'#55302C',redC:'#4F1D19',onRedC:'#FFD9D3',amb:'#F0C25A',ambDot:'#F0C25A',ambLine:'#4A3C17',ambC:'#453300',onAmbC:'#FFE1A0',neuC:'#2A2F36',onNeuC:'#C4C9D2',grn:'#8FD5A4',grnS:'#8FD5A4',onGrnS:'#0B3A1D',grnC:'#163D24',onGrnC:'#BCEDCA',scrim:'rgba(0,0,0,0.62)',nav:'#16191D',navInd:'#2B4170',shade:'#08090B',sheet:'#1D2026',noti:'#1F2228',shadow:'rgba(0,0,0,0.5)'};
+    var dark = this.props.dark ?? false;
+    return { t: dark ? D : L, dark: dark };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<title>Prvo pokretanje: dozvole</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; position: relative; overflow: hidden; display: flex; flex-direction: column; background: {{t.bg}}; color: {{t.text}}; font-family: 'Figtree', system-ui, sans-serif">
+
+<div style="padding: 48px 24px 0; display: flex; align-items: center; justify-content: space-between">
+<div aria-hidden="true" style="display: flex; gap: 6px">
+<span style="width: 28px; height: 4px; border-radius: 2px; background: {{bars.b1}}"></span>
+<span style="width: 28px; height: 4px; border-radius: 2px; background: {{bars.b2}}"></span>
+<span style="width: 28px; height: 4px; border-radius: 2px; background: {{bars.b3}}"></span>
+</div>
+<span style="font-size: 14px; font-weight: 600; color: {{t.faint}}">{{korakLabel}}</span>
+</div>
+
+<div style="flex: 1; position: relative; display: flex; align-items: center; justify-content: center">
+<span aria-hidden="true" style="position: absolute; width: 280px; height: 280px; border-radius: 140px; background: {{t.priC}}; opacity: 0.7"></span>
+
+<sc-if value="{{k1}}" hint-placeholder-val="{{ true }}">
+<div aria-hidden="true" style="position: relative; width: 320px; box-sizing: border-box; padding: 16px; border-radius: 24px; background: {{t.card}}; box-shadow: 0 10px 28px {{t.shadow}}; display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: center; gap: 8px; font-size: 13px">
+<span style="width: 24px; height: 24px; border-radius: 12px; background: {{t.pri}}; color: {{t.onPri}}; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.7 21a2 2 0 0 1-3.4 0"></path></svg></span>
+<span style="font-weight: 600">Podsjetnik</span>
+<span style="color: {{t.faint}}">· sada</span>
+</div>
+<span style="font-size: 16px; line-height: 22px; font-weight: 700">Danas: Očitati struju</span>
+<span style="font-size: 14px; line-height: 20px; color: {{t.muted}}">Javit ću se opet u 13:00.</span>
+<div style="display: flex; gap: 8px; margin-top: 6px">
+<span style="height: 36px; padding: 0 14px; border-radius: 18px; background: {{t.c1}}; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center">Odrađeno</span>
+<span style="height: 36px; padding: 0 14px; border-radius: 18px; background: {{t.c1}}; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center">Odgodi 1 sat</span>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{k2}}" hint-placeholder-val="{{ false }}">
+<div aria-hidden="true" style="position: relative; width: 320px; box-sizing: border-box; padding: 6px; border-radius: 24px; background: {{t.card}}; box-shadow: 0 10px 28px {{t.shadow}}; display: flex; flex-direction: column">
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px">
+<span style="width: 40px; height: 40px; flex-shrink: 0; border-radius: 12px; background: {{t.c1}}; color: {{t.faint}}; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span>
+<span style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 14px; line-height: 18px; color: {{t.faint}}">Bez točnih alarma</span>
+<span style="font-size: 16px; line-height: 22px; font-weight: 600; color: {{t.muted}}">stiže kad Android odluči</span>
+</span>
+</div>
+<div style="height: 1px; background: {{t.line}}; margin: 0 12px"></div>
+<div style="display: flex; align-items: center; gap: 12px; padding: 12px">
+<span style="width: 40px; height: 40px; flex-shrink: 0; border-radius: 12px; background: {{t.pri}}; color: {{t.onPri}}; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l2 2M5 3L2 6M22 6l-3-3"></path></svg></span>
+<span style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 14px; line-height: 18px; color: {{t.faint}}">S točnim alarmima</span>
+<span style="font-size: 16px; line-height: 22px; font-weight: 700">stiže točno u 09:00</span>
+</span>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{k3}}" hint-placeholder-val="{{ false }}">
+<div aria-hidden="true" style="position: relative; width: 320px; box-sizing: border-box; padding: 14px 6px 6px; border-radius: 24px; background: {{t.card}}; box-shadow: 0 10px 28px {{t.shadow}}; display: flex; flex-direction: column">
+<span style="padding: 0 14px 6px; font-size: 13px; font-weight: 600; color: {{t.faint}}">Potrošnja baterije · Podsjetnik</span>
+<div style="display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 16px; background: {{t.priC}}">
+<span style="width: 20px; height: 20px; box-sizing: border-box; border-radius: 10px; border: 2px solid {{t.pri}}; display: flex; align-items: center; justify-content: center"><span style="width: 10px; height: 10px; border-radius: 5px; background: {{t.pri}}"></span></span>
+<span style="font-size: 16px; font-weight: 700; color: {{t.onPriC}}">Neograničeno</span>
+</div>
+<div style="display: flex; align-items: center; gap: 14px; padding: 12px 14px">
+<span style="width: 20px; height: 20px; box-sizing: border-box; border-radius: 10px; border: 2px solid {{t.outline}}"></span>
+<span style="font-size: 16px; color: {{t.muted}}">Optimizirano</span>
+</div>
+<div style="display: flex; align-items: center; gap: 14px; padding: 12px 14px">
+<span style="width: 20px; height: 20px; box-sizing: border-box; border-radius: 10px; border: 2px solid {{t.outline}}"></span>
+<span style="font-size: 16px; color: {{t.muted}}">Ograničeno</span>
+</div>
+</div>
+</sc-if>
+</div>
+
+<div style="padding: 0 24px; display: flex; flex-direction: column; gap: 12px; min-height: 200px">
+<sc-if value="{{k1}}" hint-placeholder-val="{{ true }}">
+<h1 style="margin: 0; font-size: 28px; line-height: 34px; font-weight: 700; letter-spacing: -0.01em">Dopusti obavijesti</h1>
+<p style="margin: 0; font-size: 16px; line-height: 24px; color: {{t.muted}}; text-wrap: pretty">Podsjetnik ti javlja kad nešto treba napraviti i ponavlja to dok ne označiš Odrađeno. Bez obavijesti ne može ti ništa javiti.</p>
+</sc-if>
+<sc-if value="{{k2}}" hint-placeholder-val="{{ false }}">
+<h1 style="margin: 0; font-size: 28px; line-height: 34px; font-weight: 700; letter-spacing: -0.01em">Uključi točne alarme</h1>
+<p style="margin: 0; font-size: 16px; line-height: 24px; color: {{t.muted}}; text-wrap: pretty">Radi štednje baterije Android zna odgoditi podsjetnike. S točnim alarmima podsjetnik za 09:00 stiže u 09:00.</p>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: {{t.faint}}">Otvorit će se postavke sustava. Uključi „Alarmi i podsjetnici”.</p>
+</sc-if>
+<sc-if value="{{k3}}" hint-placeholder-val="{{ false }}">
+<h1 style="margin: 0; font-size: 28px; line-height: 34px; font-weight: 700; letter-spacing: -0.01em">Izuzmi iz štednje baterije</h1>
+<p style="margin: 0; font-size: 16px; line-height: 24px; color: {{t.muted}}; text-wrap: pretty">Neki telefoni gase aplikacije u pozadini, pa zakašnjeli zadaci prestanu podsjećati. Kad je Podsjetnik izuzet, javlja se i kad telefon dugo miruje.</p>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: {{t.faint}}">U postavkama odaberi „Neograničeno”.</p>
+</sc-if>
+</div>
+
+<div style="padding: 20px 24px 28px; display: flex; flex-direction: column; gap: 8px">
+<sc-if value="{{nijeZadnji}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{dalje}}" style="height: 56px; border: 0; border-radius: 28px; background: {{t.pri}}; color: {{t.onPri}}; font-family: inherit; font-size: 17px; font-weight: 700; cursor: pointer">{{gumb}}</button>
+<button type="button" onClick="{{dalje}}" style="height: 48px; border: 0; border-radius: 24px; background: transparent; color: {{t.pri}}; font-family: inherit; font-size: 16px; font-weight: 600; cursor: pointer">Kasnije</button>
+</sc-if>
+<sc-if value="{{k3}}" hint-placeholder-val="{{ false }}">
+<a href="Main.dc.html" style="height: 56px; border-radius: 28px; background: {{t.pri}}; color: {{t.onPri}}; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700; text-decoration: none">Izuzmi iz optimizacije</a>
+<a href="Main.dc.html" style="height: 48px; border-radius: 24px; color: {{t.pri}}; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; text-decoration: none">Kasnije</a>
+</sc-if>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false,"section":"Tema"},"korak":{"editor":"enum","options":["1","2","3"],"default":"1","section":"Stanje"},"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var L = {bg:'#F5F6F8',card:'#FFFFFF',c1:'#EDEFF3',c2:'#E2E6EC',line:'#DDE1E7',outline:'#B9BEC8',text:'#171A1F',muted:'#4A505B',faint:'#666C77',pri:'#2E55A5',onPri:'#FFFFFF',priC:'#DCE4F7',onPriC:'#132F69',red:'#B3261E',redS:'#B3261E',onRedS:'#FFFFFF',redCard:'#FDF2F0',redLine:'#F1C9C3',redC:'#FBE1DD',onRedC:'#7A1913',amb:'#865700',ambDot:'#E09B00',ambLine:'#EED9A4',ambC:'#FFE8AE',onAmbC:'#563900',neuC:'#E8EBEF',onNeuC:'#3E444F',grn:'#1C773D',grnS:'#1C773D',onGrnS:'#FFFFFF',grnC:'#D5F0DC',onGrnC:'#0F4F27',scrim:'rgba(15,17,21,0.5)',nav:'#ECEFF3',navInd:'#D5DEF4',shade:'#D9DDE4',sheet:'#FFFFFF',noti:'#F8F9FB',shadow:'rgba(20,24,32,0.16)'};
+    var D = {bg:'#0F1115',card:'#191C21',c1:'#22262C',c2:'#2C3138',line:'#2F343C',outline:'#4A505A',text:'#E3E6EB',muted:'#B0B6C0',faint:'#8D94A0',pri:'#ADC4FF',onPri:'#0D2860',priC:'#27427D',onPriC:'#DAE3FF',red:'#FFB4AB',redS:'#FFB4AB',onRedS:'#5C1210',redCard:'#241819',redLine:'#55302C',redC:'#4F1D19',onRedC:'#FFD9D3',amb:'#F0C25A',ambDot:'#F0C25A',ambLine:'#4A3C17',ambC:'#453300',onAmbC:'#FFE1A0',neuC:'#2A2F36',onNeuC:'#C4C9D2',grn:'#8FD5A4',grnS:'#8FD5A4',onGrnS:'#0B3A1D',grnC:'#163D24',onGrnC:'#BCEDCA',scrim:'rgba(0,0,0,0.62)',nav:'#16191D',navInd:'#2B4170',shade:'#08090B',sheet:'#1D2026',noti:'#1F2228',shadow:'rgba(0,0,0,0.5)'};
+    var self = this;
+    var s = this.state || {};
+    var dark = this.props.dark ?? false;
+    var t = dark ? D : L;
+    var k = s.korak || Number(this.props.korak || 1);
+    return {
+      t: t,
+      k1: k === 1,
+      k2: k === 2,
+      k3: k === 3,
+      nijeZadnji: k < 3,
+      korakLabel: k + ' od 3',
+      gumb: k === 1 ? 'Dopusti obavijesti' : 'Otvori postavke',
+      bars: { b1: t.pri, b2: k >= 2 ? t.pri : t.c2, b3: k >= 3 ? t.pri : t.c2 },
+      dalje: function () { self.setState({ korak: Math.min(3, k + 1) }); }
+    };
+  }
+}
+</script>
+</body>
+</html>
