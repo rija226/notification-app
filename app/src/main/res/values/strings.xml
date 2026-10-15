@@ -80,6 +80,7 @@
     <string name="detalji_tip_pravilo">Stalni · %1$s</string>
     <string name="detalji_tip_povremeni">Povremeni · %1$s</string>
     <string name="detalji_sljedeci_podsjetnik">sljedeći podsjetnik u %1$s</string>
+    <string name="detalji_sljedeci_podsjetnik_datum">sljedeći podsjetnik %1$s u %2$s</string>
     <string name="detalji_trenutni_rok">Trenutni rok</string>
     <string name="detalji_rok">Rok</string>
     <string name="detalji_sljedeci_termin">Sljedeći termin</string>

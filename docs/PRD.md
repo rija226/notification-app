@@ -271,7 +271,7 @@ trigger ──► ReminderEngine.refresh(now)
              2. planner(now)             pure function: tasks + occurrences + settings
                   → notifications to post / update / cancel, nextWakeAt
              3. post / cancel            at most one alerting post per refresh (H8)
-             4. persist lastNotifiedAt, snoozedUntil cleared, lastSummaryDate
+             4. persist lastNotifiedAt and lastSummaryDate
              5. replace THE single exact alarm with nextWakeAt
 ```
 Triggers: alarm fired; any data or settings change; app opened; `BOOT_COMPLETED`; `TIME_SET`; `TIMEZONE_CHANGED`; `MY_PACKAGE_REPLACED`; a WorkManager safety-net job every 6 h (**▸ Android:** *WorkManager* runs deferrable background jobs that survive reboot but may be delayed, so it's fine as a safety net and never used for reminder timing).
@@ -281,16 +281,16 @@ Triggers: alarm fired; any data or settings change; app opened; `BOOT_COMPLETED`
 2. **Due-day slots:** each day time on `dueDate` before the overdue moment.
 3. **Overdue slots:** a fixed daily wall-clock grid `anchor + k × interval`, from the overdue moment onward. Anchor = due time for a Povremeni with a time, otherwise the first day time (09:00 default). The overdue moment itself is a slot when a due time exists ("Rok je istekao").
    - interval = task's `overdueIntervalHours` while days late ≤ 2; from days late ≥ 3, `max(1, interval / 2)`. The anchor stays the same (HANDOFF §4.3).
-4. **Snooze:** slots before `snoozedUntil` are dropped. One slot at `snoozedUntil`. Afterwards: due-day slots continue normally; overdue grid restarts from `snoozedUntil + k × interval`.
+4. **Snooze:** slots before `snoozedUntil` are dropped. One slot at `snoozedUntil`. Afterwards: due-day slots continue normally; if the snooze ends in the overdue period, the overdue grid restarts from `snoozedUntil + k × interval`. `snoozedUntil` is kept after it fires (so the restarted grid holds) until the occurrence is closed, edited or snoozed again.
 5. **Quiet hours** (if on): a slot inside the window moves to its end; several collapse into one.
-6. **Fire rule:** the next slot is the earliest slot later than `lastNotifiedAt` (or the earliest overall if never notified). If it is ≤ now + 1 min → post with the stage valid *now* and set `lastNotifiedAt = now`. Several missed slots (phone off) → **one** post.
+6. **Fire rule:** the next slot is the earliest slot later than `lastNotifiedAt`, or later than the occurrence's `createdAt` if never notified (a task created at 14:00 doesn't fire today's 09:00/13:00 at once). If it is ≤ now + 1 min → post with the stage valid *now* and set `lastNotifiedAt = now`. Several missed slots (phone off) → **one** post.
 7. Paused task or closed occurrence → no slots; its notification is cancelled.
 8. **Morning summary slot:** daily at `quietTo`, once per date (`lastSummaryDate`).
 
 `nextWakeAt` = the earliest future slot across all occurrences and the summary.
 
 ### 8.3 Sound policy (H8, H9)
-One refresh = at most one alerting notification, the most urgent: overdue > due > summary > early. All others in that refresh are posted silently. A repeat reminder for the same stage alerts again (that's its purpose). A re-post after a swipe never alerts (H4).
+One refresh = at most one alerting notification, the most urgent: overdue > due > summary. Early reminders never alert (silent channel). All others in that refresh are posted silently. A repeat reminder for the same stage alerts again (that's its purpose). A re-post after a swipe never alerts (H4).
 
 ### 8.4 Changes while reminders are pending
 - **Edit task:** open occurrences get `lastNotifiedAt = now` and `snoozedUntil = null`. Nothing fires for past slots, and the next future slot follows the new schedule. Rule change → the newest open, not-yet-overdue occurrence is regenerated with the new rule. Overdue occurrences keep their dates.

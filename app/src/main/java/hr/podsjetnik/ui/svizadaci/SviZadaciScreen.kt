@@ -3,6 +3,8 @@ package hr.podsjetnik.ui.svizadaci
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,14 +44,20 @@ import java.time.LocalDate
 @Composable
 fun SviZadaciScreen(
     onNewTask: () -> Unit,
+    onOpenTask: (Long) -> Unit,
     viewModel: SviZadaciViewModel = viewModel(factory = SviZadaciViewModel.Factory),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    SviZadaciContent(state, onNewTask)
+    SviZadaciContent(state, onNewTask, onOpenTask)
 }
 
 @Composable
-private fun SviZadaciContent(state: SviZadaciUiState, onNewTask: () -> Unit, modifier: Modifier = Modifier) {
+private fun SviZadaciContent(
+    state: SviZadaciUiState,
+    onNewTask: () -> Unit,
+    onOpenTask: (Long) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val colors = LocalPodsjetnikColors.current
     var tab by rememberSaveable { mutableIntStateOf(0) }
     val rows = if (tab == 0) state.recurring else state.oneOff
@@ -81,7 +89,7 @@ private fun SviZadaciContent(state: SviZadaciUiState, onNewTask: () -> Unit, mod
                     contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 96.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    items(rows, key = { it.taskId }) { TaskListRow(it, state.today) }
+                    items(rows, key = { it.taskId }) { row -> TaskListRow(row, state.today) { onOpenTask(row.taskId) } }
                 }
             }
         }
@@ -90,12 +98,14 @@ private fun SviZadaciContent(state: SviZadaciUiState, onNewTask: () -> Unit, mod
 }
 
 @Composable
-private fun TaskListRow(row: TaskRow, today: LocalDate) {
+private fun TaskListRow(row: TaskRow, today: LocalDate, onClick: () -> Unit) {
     val colors = LocalPodsjetnikColors.current
     Column(
         verticalArrangement = Arrangement.spacedBy(6.dp),
         modifier = Modifier
             .fillMaxWidth()
+            .clip(RoundedCornerShape(20.dp))
+            .clickable(onClick = onClick)
             .background(colors.card, RoundedCornerShape(20.dp))
             .border(BorderStroke(1.dp, colors.line), RoundedCornerShape(20.dp))
             .padding(14.dp),

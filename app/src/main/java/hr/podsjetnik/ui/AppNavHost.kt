@@ -24,6 +24,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import hr.podsjetnik.R
 import hr.podsjetnik.ui.danas.DanasScreen
+import hr.podsjetnik.ui.detalji.DetaljiScreen
 import hr.podsjetnik.ui.spike.SpikeScreen
 import hr.podsjetnik.ui.svizadaci.SviZadaciScreen
 import hr.podsjetnik.ui.theme.LocalPodsjetnikColors
@@ -31,7 +32,7 @@ import hr.podsjetnik.ui.uredi.UrediScreen
 import kotlinx.serialization.Serializable
 import kotlin.reflect.KClass
 
-// Routes (HANDOFF §6). Detalji and edit-by-id arrive in Phases 3 and 5.
+// Routes (HANDOFF §6). Edit-by-id arrives in Phase 5.
 @Serializable
 object DanasRoute
 
@@ -43,6 +44,9 @@ object PostavkeRoute
 
 @Serializable
 data class UrediRoute(val taskId: Long? = null)
+
+@Serializable
+data class DetaljiRoute(val taskId: Long)
 
 private data class TopLevel(val route: Any, val type: KClass<*>, @StringRes val label: Int, @DrawableRes val icon: Int)
 
@@ -91,7 +95,10 @@ fun AppNavHost() {
             modifier = Modifier.padding(padding).consumeWindowInsets(padding),
         ) {
             composable<DanasRoute> { DanasScreen(onNewTask = openNewTask) }
-            composable<SviZadaciRoute> { SviZadaciScreen(onNewTask = openNewTask) }
+            composable<SviZadaciRoute> {
+                SviZadaciScreen(onNewTask = openNewTask, onOpenTask = { navController.navigate(DetaljiRoute(it)) })
+            }
+            composable<DetaljiRoute> { DetaljiScreen(onBack = { navController.popBackStack() }) }
             // ponytail: Postavke shows the Phase 1 spike screen until Phase 6.
             composable<PostavkeRoute> { SpikeScreen() }
             composable<UrediRoute> { UrediScreen(onClose = { navController.popBackStack() }) }
