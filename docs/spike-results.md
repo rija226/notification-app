@@ -4,9 +4,9 @@ Fill in while running the checklist (PLAN Phase 1). Delays come from the in-app 
 
 | | |
 |---|---|
-| Phone model | |
-| One UI version | |
-| Android version | |
+| Phone model | Samsung Galaxy A35 (SM-A356B) |
+| One UI version | 8.5 (ro.build.version.oneui = 80500) |
+| Android version | 16 |
 | Date of tests | |
 
 ## Alarm accuracy

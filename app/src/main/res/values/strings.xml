@@ -232,6 +232,12 @@
     <string name="uvezi_potvrda_naslov">Zamijeniti sve podatke?</string>
     <string name="uvezi_potvrda_tekst">Uvoz briše postojeće zadatke i postavke i zamjenjuje ih onima iz datoteke.</string>
     <string name="uvezi_potvrda_gumb">Uvezi</string>
+    <plurals name="uvezi_broj">
+        <item quantity="one">Datoteka sadrži %d zadatak.</item>
+        <item quantity="few">Datoteka sadrži %d zadatka.</item>
+        <item quantity="other">Datoteka sadrži %d zadataka.</item>
+    </plurals>
+    <string name="izvoz_greska">Izvoz nije uspio.</string>
     <string name="izvoz_uspjeh">Podaci su izvezeni.</string>
     <string name="uvoz_uspjeh">Podaci su uvezeni.</string>
     <string name="uvoz_greska">Datoteka nije ispravna sigurnosna kopija.</string>

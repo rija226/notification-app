@@ -1,5 +1,7 @@
 package hr.podsjetnik.ui.postavke
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -27,11 +29,14 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -70,9 +75,26 @@ private enum class Picker { QUIET_FROM, QUIET_TO, DAY_TIME }
 @Composable
 fun PostavkeScreen(onOpenDiagnostics: () -> Unit, viewModel: PostavkeViewModel = viewModel(factory = PostavkeViewModel.Factory)) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val pendingImport by viewModel.pendingImport.collectAsStateWithLifecycle()
+    val message by viewModel.message.collectAsStateWithLifecycle()
     val (status, recheck) = rememberDeviceStatus()
     val fixes = rememberDeviceFixes(onNotificationResult = recheck)
     val colors = LocalPodsjetnikColors.current
+    val snackbar = remember { SnackbarHostState() }
+    val messageText = message?.let { stringResource(it) }
+    LaunchedEffect(message) {
+        if (messageText != null) {
+            snackbar.showSnackbar(messageText)
+            viewModel.messageShown()
+        }
+    }
+    // Storage Access Framework pickers (PRD FR-10): no storage permission needed.
+    val exportLauncher = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
+        uri?.let(viewModel::export)
+    }
+    val importLauncher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        uri?.let(viewModel::readImport)
+    }
     val current = state ?: return Box(Modifier.fillMaxSize().background(colors.bg))
     val settings = current.settings
     val problems = problemsOf(status, settings.samsungSetupConfirmed, current.lateAlarms)
@@ -186,21 +208,43 @@ fun PostavkeScreen(onOpenDiagnostics: () -> Unit, viewModel: PostavkeViewModel =
         SectionTitle(stringResource(R.string.zadano_naslov), Modifier.padding(top = 12.dp))
         DefaultsCard(settings, viewModel, onAddTime = { picker = Picker.DAY_TIME }, onEarly = { showEarly = true })
 
-        SectionTitle(stringResource(R.string.dijagnostika_naslov), Modifier.padding(top = 12.dp))
+        SectionTitle(stringResource(R.string.sigurnosna_kopija), Modifier.padding(top = 12.dp))
         Card {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth().clickable(onClick = onOpenDiagnostics).padding(16.dp),
-            ) {
-                IconTile(R.drawable.ic_list, colors.c1, colors.muted)
-                Column(modifier = Modifier.weight(1f).padding(horizontal = 16.dp)) {
-                    Text(stringResource(R.string.dijagnostika_naslov), style = MaterialTheme.typography.titleMedium, color = colors.text)
-                    Text(stringResource(R.string.dijagnostika_opis), style = MaterialTheme.typography.bodyMedium, color = colors.muted)
+            Column {
+                ActionRow(R.drawable.ic_upload, stringResource(R.string.izvezi), stringResource(R.string.izvezi_opis)) {
+                    exportLauncher.launch(viewModel.backupFileName())
                 }
-                Icon(painterResource(R.drawable.ic_chevron_right), null, tint = colors.muted)
+                Divider()
+                ActionRow(R.drawable.ic_download, stringResource(R.string.uvezi), stringResource(R.string.uvezi_opis)) {
+                    // Some pickers label .json as octet-stream or text; validation happens after reading.
+                    importLauncher.launch(arrayOf("application/json", "application/octet-stream", "text/plain"))
+                }
             }
         }
+
+        SectionTitle(stringResource(R.string.dijagnostika_naslov), Modifier.padding(top = 12.dp))
+        Card {
+            ActionRow(R.drawable.ic_list, stringResource(R.string.dijagnostika_naslov), stringResource(R.string.dijagnostika_opis), onOpenDiagnostics)
+        }
         Spacer(Modifier.size(16.dp))
+    }
+    Box(Modifier.fillMaxSize()) { SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).padding(16.dp)) }
+
+    pendingImport?.let { content ->
+        AlertDialog(
+            onDismissRequest = viewModel::cancelImport,
+            title = { Text(stringResource(R.string.uvezi_potvrda_naslov)) },
+            text = {
+                Text(
+                    stringResource(R.string.uvezi_potvrda_tekst) + "\n\n" +
+                        pluralStringResource(R.plurals.uvezi_broj, content.tasks.size, content.tasks.size),
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = viewModel::confirmImport) { Text(stringResource(R.string.uvezi_potvrda_gumb), color = colors.red) }
+            },
+            dismissButton = { TextButton(onClick = viewModel::cancelImport) { Text(stringResource(R.string.odustani)) } },
+        )
     }
 
     when (picker) {
@@ -374,6 +418,22 @@ private fun PermissionRow(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun ActionRow(@DrawableRes icon: Int, title: String, subtitle: String, onClick: () -> Unit) {
+    val colors = LocalPodsjetnikColors.current
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick).padding(16.dp),
+    ) {
+        IconTile(icon, colors.c1, colors.muted)
+        Column(modifier = Modifier.weight(1f).padding(horizontal = 16.dp)) {
+            Text(title, style = MaterialTheme.typography.titleMedium, color = colors.text)
+            Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = colors.muted)
+        }
+        Icon(painterResource(R.drawable.ic_chevron_right), null, tint = colors.muted)
     }
 }
 

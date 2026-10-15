@@ -4,6 +4,7 @@ import androidx.room3.Room
 import androidx.sqlite.driver.AndroidSQLiteDriver
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import hr.podsjetnik.domain.Occurrence
 import hr.podsjetnik.domain.RecurrenceRule
 import hr.podsjetnik.domain.Settings
 import hr.podsjetnik.domain.Task
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -75,6 +77,18 @@ class TaskRepositoryTest {
         repository.ensureOccurrences()
         repository.ensureOccurrences()
         assertEquals(1, repository.tasks.first().single().occurrences.size)
+    }
+
+    @Test
+    fun failedImportLeavesExistingDataUntouched() = runTest {
+        repository.createTask(newTask(TaskType.RECURRING, RecurrenceRule.LastDayOfMonth), oneOffDate = null)
+        val before = repository.tasks.first()
+        val task = newTask(TaskType.RECURRING, RecurrenceRule.DayOfMonth(5)).copy(id = 50)
+        val clash = Occurrence(taskId = 50, dueDate = LocalDate.parse("2026-11-05"), createdAt = clock.instant())
+        // Two occurrences on the same date violate the unique index → the whole transaction rolls back.
+        val failed = runCatching { repository.replaceAll(listOf(task), listOf(clash.copy(id = 1), clash.copy(id = 2)), Settings()) }
+        assertTrue(failed.isFailure)
+        assertEquals(before, repository.tasks.first())
     }
 
     @Test

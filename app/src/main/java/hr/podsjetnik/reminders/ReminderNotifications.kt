@@ -154,6 +154,8 @@ class ReminderNotifications(private val context: Context) {
 
     fun cancelDone(occurrenceId: Long) = compat.cancel(TAG_DONE, occurrenceId.toInt())
 
+    fun cancelAll() = compat.cancelAll()
+
     /** Removes reminder notifications of occurrences that are closed, paused or deleted. */
     fun cancelInactive(activeOccurrenceIds: Set<Long>) {
         system.activeNotifications

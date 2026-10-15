@@ -62,6 +62,12 @@ class ReminderEngine(
         refreshLocked()
     }
 
+    /** Backup import replaced everything: old notifications may carry reused ids, so clear them all (PRD FR-10). */
+    suspend fun onDataReplaced() = mutex.withLock {
+        notifications.cancelAll()
+        refreshLocked()
+    }
+
     /** Overdue notification swiped away while unlocked → back immediately and silently (PRD H4). */
     suspend fun onDismissed(occurrenceId: Long) = mutex.withLock { repostSilently(occurrenceId) }
 

@@ -4,6 +4,7 @@ import android.content.Context
 import hr.podsjetnik.data.AppDatabase
 import hr.podsjetnik.data.SettingsStore
 import hr.podsjetnik.data.TaskRepository
+import hr.podsjetnik.data.backup.BackupRepository
 import hr.podsjetnik.reminders.AlarmScheduler
 import hr.podsjetnik.reminders.ReminderEngine
 import hr.podsjetnik.reminders.ReminderNotifications
@@ -37,6 +38,8 @@ class AppContainer(context: Context) {
     )
 
     val taskActions = TaskActions(reminderEngine, taskRepository, clock)
+
+    val backupRepository = BackupRepository(context, taskRepository, reminderEngine, clock)
 }
 
 /**
