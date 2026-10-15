@@ -454,6 +454,7 @@ Samsung adds its own limits independent of Android's battery exemption [S14, S15
 | photoUri | String? | **v2** |
 | snoozedUntil | Instant? | |
 | lastNotifiedAt | Instant? | last reminder slot posted |
+| createdAt | Instant | lets Poništi delete only the occurrence its Done auto-created (FR-3) |
 
 "Zadnji put odrađeno" on Detalji = the latest DONE occurrence.
 

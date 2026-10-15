@@ -68,3 +68,4 @@ I build and run from Android Studio. CLI commands are for verification.
 - **Don't commit** `keystore.properties`, `*.jks`, `local.properties`, or build output.
 - **Don't work ahead** of the current phase, and don't refactor unrelated code.
 - **Don't commit or push** unless asked.
+- **No `Co-Authored-By` or any Claude attribution** in commits or PRs. The only author is Aleksandar Rijić <aleksandarrijic@gmail.com>.

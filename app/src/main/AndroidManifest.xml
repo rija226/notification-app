@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- No INTERNET permission, ever (PRD §1). -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Granted at install; Play policy doesn't apply to a sideloaded APK (PRD §10.2). -->
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
     <!-- allowBackup=false: no cloud backup, data leaves the phone only via manual JSON export (PRD FR-10). -->
     <application
+        android:name=".PodsjetnikApp"
         android:allowBackup="false"
         android:label="@string/app_name"
         android:theme="@style/Theme.Podsjetnik">
@@ -15,6 +23,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".reminders.ReminderReceiver"
+            android:exported="false" />
+
+        <receiver
+            android:name=".reminders.NotificationActionReceiver"
+            android:exported="false" />
+
+        <!-- Exported so system broadcasts reach it; it only triggers a harmless refresh. -->
+        <receiver
+            android:name=".reminders.BootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

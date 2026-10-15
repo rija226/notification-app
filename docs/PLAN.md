@@ -53,7 +53,10 @@ Verified 2026-10-14 from the official release pages in §8. Phase 0 creates the 
 | androidx.work:work-runtime | **2.12.0** | 6-hour safety-net refresh |
 | androidx.core:core-ktx | **1.19.1** | `NotificationCompat`, helpers |
 | kotlinx-serialization-json | **1.11.0** | Backup, rule/time-list columns (1.12.0 is still RC) |
-| kotlinx-coroutines-test | **1.11.0** | Tests for suspend code |
+| kotlinx-coroutines-test + coroutines BOM | **1.11.0** | Tests for suspend code; the BOM aligns the transitive coroutines core (otherwise on-device tests crash) |
+| androidx.sqlite:sqlite-framework | **2.7.1** | `AndroidSQLiteDriver` required by Room 3 |
+| androidx.room3:room3-testing | **3.0.3** | `MigrationTestHelper` |
+| androidx.test:runner | **1.7.0** | On-device test runner |
 | JUnit | **4.13.2** | JVM unit tests |
 | androidx.test.ext:junit | **1.3.0** | On-device Room tests |
 | Figtree font (Google Fonts, OFL) | weights 400/500/600/700 | Bundled TTF in `res/font` (HANDOFF §2) |

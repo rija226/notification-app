@@ -37,6 +37,10 @@
         <item quantity="other">Za %d dana</item>
     </plurals>
     <string name="chip_odradjeno">Odrađeno</string>
+    <string name="chip_rok_istekao">Rok istekao</string>
+    <string name="chip_pauzirano">Pauzirano</string>
+    <string name="tab_s_brojem">%1$s (%2$d)</string>
+    <string name="bez_vremena">Bez vremena</string>
 
     <!-- Danas -->
     <string name="danas_naslov">Danas</string>
@@ -246,6 +250,8 @@
     <string name="kanal_na_dan_opis">Ponavlja se na dan roka dok ne označiš Odrađeno.</string>
     <string name="kanal_kasni">Zakašnjeli zadaci</string>
     <string name="kanal_kasni_opis">Stalna obavijest dok zadatak kasni.</string>
+    <string name="kanal_sazetak">Jutarnji sažetak</string>
+    <string name="kanal_sazetak_opis">Jedna obavijest ujutro s pregledom dana.</string>
     <plurals name="notif_rano_naslov">
         <item quantity="one">Za %1$d dan: %2$s</item>
         <item quantity="few">Za %1$d dana: %2$s</item>
@@ -264,6 +270,24 @@
     <string name="notif_kasni_tekst">Rok je bio %1$s. Podsjećam %2$s dok ne označiš Odrađeno.</string>
     <string name="notif_akcija_odradjeno">Odrađeno</string>
     <string name="notif_akcija_odgodi">Odgodi 1 sat</string>
+    <string name="notif_odradjeno_naslov">Odrađeno: %1$s</string>
+
+    <!-- Phase 1 spike screen (temporary, removed in Phase 5) -->
+    <string name="spike_naslov">Spike: pouzdanost alarma</string>
+    <string name="spike_postavke_aplikacije">Postavke aplikacije (Samsung, baterija)</string>
+    <string name="spike_mod_a">A: točni alarm</string>
+    <string name="spike_mod_b">B: budilica</string>
+    <string name="spike_test_2">Test za 2 min</string>
+    <string name="spike_test_15">Test za 15 min</string>
+    <string name="spike_niz">Noćni niz (svakih 30 min × 16)</string>
+    <string name="spike_obrisi">Obriši testove na čekanju</string>
+    <string name="spike_dnevnik">Dnevnik alarma</string>
+    <string name="spike_seed">Učitaj testne podatke (zamjenjuje sve)</string>
+    <string name="spike_problem">Problem</string>
+    <string name="spike_ceka">čeka</string>
+    <string name="spike_log_vremena">zakazano %1$s · stiglo %2$s</string>
+    <string name="spike_notif_naslov">Test #%1$d</string>
+    <string name="spike_notif_tekst">Zakazano %1$s · stiglo %2$s</string>
 
     <!-- Dates (custom formatter) -->
     <string-array name="dani_kratko">
