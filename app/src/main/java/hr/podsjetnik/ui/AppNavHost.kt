@@ -11,6 +11,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -57,9 +58,15 @@ private val topLevels = listOf(
 )
 
 @Composable
-fun AppNavHost() {
+fun AppNavHost(openTaskId: Long?, onOpenTaskHandled: () -> Unit) {
     val colors = LocalPodsjetnikColors.current
     val navController = rememberNavController()
+    LaunchedEffect(openTaskId) {
+        if (openTaskId != null) {
+            navController.navigate(DetaljiRoute(openTaskId))
+            onOpenTaskHandled()
+        }
+    }
     val backStackEntry by navController.currentBackStackEntryAsState()
     val destination = backStackEntry?.destination
     val showBottomBar = topLevels.any { top -> destination?.hierarchy?.any { it.hasRoute(top.type) } == true }

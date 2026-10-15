@@ -10,6 +10,6 @@ import hr.podsjetnik.log
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         log("system event: ${intent.action}")
-        runAsync(context) { context.container.spikeReminders.refresh() }
+        runAsync(context) { context.container.reminderEngine.refresh() }
     }
 }

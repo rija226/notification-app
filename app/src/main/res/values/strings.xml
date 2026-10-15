@@ -258,7 +258,8 @@
         <item quantity="few">Za %1$d dana: %2$s</item>
         <item quantity="other">Za %1$d dana: %2$s</item>
     </plurals>
-    <string name="notif_rano_tekst">Rok je %1$s.</string>
+    <!-- %1$s is a date that already ends with a period ("31. 10.") -->
+    <string name="notif_rano_tekst">Rok je %1$s</string>
     <string name="notif_rano_tekst_pravilo">Rok je %1$s (%2$s).</string>
     <string name="notif_danas_naslov">Danas: %1$s</string>
     <string name="notif_danas_tekst">Rok je danas. Sljedeći podsjetnik u %1$s ako ne označiš Odrađeno.</string>
@@ -268,27 +269,39 @@
         <item quantity="few">Kasni %1$d dana: %2$s</item>
         <item quantity="other">Kasni %1$d dana: %2$s</item>
     </plurals>
-    <string name="notif_kasni_tekst">Rok je bio %1$s. Podsjećam %2$s dok ne označiš Odrađeno.</string>
+    <string name="notif_kasni_tekst">Rok je bio %1$s Podsjećam %2$s dok ne označiš Odrađeno.</string>
     <string name="notif_akcija_odradjeno">Odrađeno</string>
     <string name="notif_akcija_odgodi">Odgodi 1 sat</string>
     <string name="notif_odradjeno_naslov">Odrađeno: %1$s</string>
+    <string name="notif_rok_istekao_naslov">Rok je istekao: %1$s</string>
+    <!-- Two open months of one task: "Očitati struju (listopad)" -->
+    <string name="notif_naslov_mjesec">%1$s (%2$s)</string>
 
-    <!-- Phase 1 spike screen (temporary, removed in Phase 5) -->
-    <string name="spike_naslov">Spike: pouzdanost alarma</string>
+    <!-- Morning summary (PRD FR-6): "Danas imaš 3 zadatka, 1 kasni" / "Kasni ti 1 zadatak" -->
+    <plurals name="sazetak_danas_imas">
+        <item quantity="one">Danas imaš %d zadatak</item>
+        <item quantity="few">Danas imaš %d zadatka</item>
+        <item quantity="other">Danas imaš %d zadataka</item>
+    </plurals>
+    <string name="sazetak_s_kasnjenjem">%1$s, %2$s</string>
+    <plurals name="sazetak_samo_kasni">
+        <item quantity="one">Kasni ti %d zadatak</item>
+        <item quantity="few">Kasne ti %d zadatka</item>
+        <item quantity="other">Kasni ti %d zadataka</item>
+    </plurals>
+
+    <!-- Temporary debug screen in the Postavke tab (removed in Phase 6) -->
+    <string name="spike_naslov">Testiranje i dijagnostika</string>
     <string name="spike_postavke_aplikacije">Postavke aplikacije (Samsung, baterija)</string>
-    <string name="spike_mod_a">A: točni alarm</string>
-    <string name="spike_mod_b">B: budilica</string>
-    <string name="spike_test_2">Test za 2 min</string>
-    <string name="spike_test_15">Test za 15 min</string>
-    <string name="spike_niz">Noćni niz (svakih 30 min × 16)</string>
-    <string name="spike_obrisi">Obriši testove na čekanju</string>
+    <string name="spike_test_2">Testni zadatak za 2 min</string>
+    <string name="spike_test_15">Testni zadatak za 15 min</string>
+    <string name="spike_test_naslov">Test %1$s</string>
     <string name="spike_dnevnik">Dnevnik alarma</string>
     <string name="spike_seed">Učitaj testne podatke (zamjenjuje sve)</string>
     <string name="spike_problem">Problem</string>
     <string name="spike_ceka">čeka</string>
+    <string name="spike_log_naslov">%1$s · obavijesti: %2$d</string>
     <string name="spike_log_vremena">zakazano %1$s · stiglo %2$s</string>
-    <string name="spike_notif_naslov">Test #%1$d</string>
-    <string name="spike_notif_tekst">Zakazano %1$s · stiglo %2$s</string>
 
     <!-- Dates (custom formatter) -->
     <string-array name="dani_kratko">
@@ -322,6 +335,20 @@
         <item>listopada</item>
         <item>studenoga</item>
         <item>prosinca</item>
+    </string-array>
+    <string-array name="mjeseci">
+        <item>siječanj</item>
+        <item>veljača</item>
+        <item>ožujak</item>
+        <item>travanj</item>
+        <item>svibanj</item>
+        <item>lipanj</item>
+        <item>srpanj</item>
+        <item>kolovoz</item>
+        <item>rujan</item>
+        <item>listopad</item>
+        <item>studeni</item>
+        <item>prosinac</item>
     </string-array>
 
 </resources>

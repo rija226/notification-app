@@ -14,16 +14,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,18 +37,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hr.podsjetnik.R
 import hr.podsjetnik.data.AlarmLogEntity
-import hr.podsjetnik.data.AlarmMode
 import hr.podsjetnik.reminders.DeviceStatus
 import hr.podsjetnik.reminders.PermissionChecker
 import hr.podsjetnik.ui.theme.LocalPodsjetnikColors
 import java.time.ZoneId
 
-// ponytail: temporary Phase 1 screen, deleted in Phase 5 (PLAN).
+// ponytail: temporary debug screen (Postavke tab) until Phase 6 builds Postavke and Dijagnostika.
 @SuppressLint("BatteryLife") // sideloaded app: the direct exemption dialog is allowed (PRD §10.4)
 @Composable
 fun SpikeScreen(viewModel: SpikeViewModel = viewModel(factory = SpikeViewModel.Factory)) {
     val context = LocalContext.current
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val log by viewModel.log.collectAsStateWithLifecycle()
     var status by remember { mutableStateOf(PermissionChecker.status(context)) }
     LifecycleResumeEffect(Unit) {
         status = PermissionChecker.status(context)
@@ -63,7 +59,7 @@ fun SpikeScreen(viewModel: SpikeViewModel = viewModel(factory = SpikeViewModel.F
     val appUri = "package:${context.packageName}".toUri()
 
     SpikeContent(
-        state = state,
+        log = log,
         status = status,
         onFixNotifications = { notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS) },
         onFixBattery = {
@@ -72,35 +68,26 @@ fun SpikeScreen(viewModel: SpikeViewModel = viewModel(factory = SpikeViewModel.F
         onOpenAppSettings = {
             context.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, appUri))
         },
-        onModeChange = viewModel::setMode,
         onAddTest = viewModel::addTest,
-        onAddNightSeries = viewModel::addNightSeries,
-        onClearPending = viewModel::clearPending,
         onSeed = if (viewModel.seedAvailable) viewModel::loadSeed else null,
     )
 }
 
 @Composable
 private fun SpikeContent(
-    state: SpikeUiState,
+    log: List<AlarmLogEntity>,
     status: DeviceStatus,
     onFixNotifications: () -> Unit,
     onFixBattery: () -> Unit,
     onOpenAppSettings: () -> Unit,
-    onModeChange: (AlarmMode) -> Unit,
     onAddTest: (Long) -> Unit,
-    onAddNightSeries: () -> Unit,
-    onClearPending: () -> Unit,
     onSeed: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     val colors = LocalPodsjetnikColors.current
     val zone = ZoneId.systemDefault()
     LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .background(colors.bg)
-            .safeDrawingPadding(),
+        modifier = modifier.fillMaxSize().background(colors.bg),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
@@ -120,32 +107,12 @@ private fun SpikeContent(
             }
         }
         item {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                FilterChip(
-                    selected = state.mode == AlarmMode.EXACT_WHILE_IDLE,
-                    onClick = { onModeChange(AlarmMode.EXACT_WHILE_IDLE) },
-                    label = { Text(stringResource(R.string.spike_mod_a)) },
-                )
-                FilterChip(
-                    selected = state.mode == AlarmMode.ALARM_CLOCK,
-                    onClick = { onModeChange(AlarmMode.ALARM_CLOCK) },
-                    label = { Text(stringResource(R.string.spike_mod_b)) },
-                )
-            }
-        }
-        item {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Button(onClick = { onAddTest(2) }, modifier = Modifier.fillMaxWidth()) {
                     Text(stringResource(R.string.spike_test_2))
                 }
                 Button(onClick = { onAddTest(15) }, modifier = Modifier.fillMaxWidth()) {
                     Text(stringResource(R.string.spike_test_15))
-                }
-                Button(onClick = onAddNightSeries, modifier = Modifier.fillMaxWidth()) {
-                    Text(stringResource(R.string.spike_niz))
-                }
-                TextButton(onClick = onClearPending, modifier = Modifier.fillMaxWidth()) {
-                    Text(stringResource(R.string.spike_obrisi))
                 }
                 if (onSeed != null) {
                     OutlinedButton(onClick = onSeed, modifier = Modifier.fillMaxWidth()) {
@@ -162,7 +129,7 @@ private fun SpikeContent(
                 modifier = Modifier.padding(top = 8.dp),
             )
         }
-        items(state.log, key = { it.id }) { entry ->
+        items(log, key = { it.id }) { entry ->
             LogRow(entry, zone)
             HorizontalDivider(color = colors.line)
         }
@@ -189,10 +156,9 @@ private fun StatusRow(label: String, ok: Boolean, onFix: (() -> Unit)?) {
 private fun LogRow(entry: AlarmLogEntity, zone: ZoneId) {
     val colors = LocalPodsjetnikColors.current
     val delay = formatDelay(entry.scheduledFor, entry.firedAt) ?: stringResource(R.string.spike_ceka)
-    val mode = if (entry.mode == AlarmMode.EXACT_WHILE_IDLE) "A" else "B"
     Column(modifier = Modifier.padding(vertical = 4.dp)) {
         Text(
-            "#${entry.id} · $mode · $delay",
+            stringResource(R.string.spike_log_naslov, delay, entry.postedCount),
             style = MaterialTheme.typography.titleMedium,
             color = colors.text,
         )

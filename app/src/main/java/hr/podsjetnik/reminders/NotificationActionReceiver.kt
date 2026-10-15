@@ -10,13 +10,13 @@ class NotificationActionReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val id = intent.getLongExtra(EXTRA_ID, -1)
         if (id < 0) return
-        val reminders = context.container.spikeReminders
+        val engine = context.container.reminderEngine
         runAsync(context) {
             when (intent.action) {
-                ACTION_DONE -> reminders.onDone(id)
-                ACTION_UNDO -> reminders.onUndo(id)
-                ACTION_SNOOZE -> reminders.onSnooze(id)
-                ACTION_DISMISSED -> reminders.onDismissed(id)
+                ACTION_DONE -> engine.onDone(id)
+                ACTION_UNDO -> engine.onUndo(id)
+                ACTION_SNOOZE -> engine.onSnooze(id)
+                ACTION_DISMISSED -> engine.onDismissed(id)
             }
         }
     }

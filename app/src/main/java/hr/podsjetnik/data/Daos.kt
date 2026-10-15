@@ -15,6 +15,9 @@ interface TaskDao {
     @Query("SELECT * FROM task")
     suspend fun getAll(): List<TaskEntity>
 
+    @Query("SELECT * FROM task WHERE id = :id")
+    suspend fun getById(id: Long): TaskEntity?
+
     @Insert
     suspend fun insert(task: TaskEntity): Long
 
@@ -36,6 +39,9 @@ interface OccurrenceDao {
     @Query("SELECT * FROM occurrence")
     suspend fun getAll(): List<OccurrenceEntity>
 
+    @Query("SELECT * FROM occurrence WHERE id = :id")
+    suspend fun getById(id: Long): OccurrenceEntity?
+
     @Query("SELECT * FROM occurrence WHERE taskId = :taskId")
     suspend fun getForTask(taskId: Long): List<OccurrenceEntity>
 
@@ -43,7 +49,19 @@ interface OccurrenceDao {
     suspend fun insertAll(occurrences: List<OccurrenceEntity>)
 
     @Update
+    suspend fun update(occurrence: OccurrenceEntity)
+
+    @Update
     suspend fun updateAll(occurrences: List<OccurrenceEntity>)
+
+    @Query("UPDATE occurrence SET lastNotifiedAt = :at WHERE id = :id")
+    suspend fun setLastNotifiedAt(id: Long, at: Instant)
+
+    @Query("UPDATE occurrence SET snoozedUntil = :until WHERE id = :id")
+    suspend fun setSnoozedUntil(id: Long, until: Instant)
+
+    @Query("DELETE FROM occurrence WHERE id IN (:ids)")
+    suspend fun deleteByIds(ids: List<Long>)
 
     @Query("DELETE FROM occurrence")
     suspend fun deleteAll()
@@ -54,20 +72,18 @@ interface AlarmLogDao {
     @Insert
     suspend fun insert(entries: List<AlarmLogEntity>)
 
-    @Query("SELECT * FROM alarm_log WHERE id = :id")
-    suspend fun getById(id: Long): AlarmLogEntity?
-
     @Query("SELECT * FROM alarm_log WHERE firedAt IS NULL ORDER BY scheduledFor LIMIT 1")
     suspend fun nextPending(): AlarmLogEntity?
-
-    @Query("SELECT * FROM alarm_log WHERE firedAt IS NULL AND scheduledFor <= :until ORDER BY scheduledFor")
-    suspend fun pendingUntil(until: Instant): List<AlarmLogEntity>
 
     @Query("UPDATE alarm_log SET firedAt = :firedAt, postedCount = :postedCount WHERE id = :id")
     suspend fun markFired(id: Long, firedAt: Instant, postedCount: Int)
 
     @Query("DELETE FROM alarm_log WHERE firedAt IS NULL")
     suspend fun deletePending()
+
+    /** Keeps the newest [keep] rows (PRD §8.6). */
+    @Query("DELETE FROM alarm_log WHERE id NOT IN (SELECT id FROM alarm_log ORDER BY scheduledFor DESC LIMIT :keep)")
+    suspend fun trim(keep: Int)
 
     @Query("SELECT * FROM alarm_log ORDER BY scheduledFor DESC LIMIT 200")
     fun observeRecent(): Flow<List<AlarmLogEntity>>

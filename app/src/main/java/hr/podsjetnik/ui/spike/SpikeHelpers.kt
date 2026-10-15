@@ -18,7 +18,3 @@ fun formatDelay(scheduledFor: Instant, firedAt: Instant?): String? {
     val absolute = abs(seconds)
     return if (absolute < 60) "$sign$absolute s" else "$sign${absolute / 60} min ${absolute % 60} s"
 }
-
-/** Overnight series: 16 tests, one every 30 minutes (8 hours). */
-fun nightSeriesDelays(count: Int = 16, step: Duration = Duration.ofMinutes(30)): List<Duration> =
-    (1..count).map { step.multipliedBy(it.toLong()) }

@@ -166,7 +166,8 @@ private fun overdueGrid(
     }.filter { it >= overdue }
 }
 
-private fun stageAt(task: Task, occurrence: Occurrence, time: Instant, zone: ZoneId): Stage = when {
+/** Stage valid at [time]; also used for silent re-posts (swipe, Poništi). */
+fun stageAt(task: Task, occurrence: Occurrence, time: Instant, zone: ZoneId): Stage = when {
     time >= overdueMoment(occurrence.dueDate, task.dueTime, zone) -> Stage.OVERDUE
     time.atZone(zone).toLocalDate() >= occurrence.dueDate -> Stage.DUE
     else -> Stage.EARLY

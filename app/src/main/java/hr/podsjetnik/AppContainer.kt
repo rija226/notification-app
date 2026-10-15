@@ -5,7 +5,8 @@ import hr.podsjetnik.data.AppDatabase
 import hr.podsjetnik.data.SettingsStore
 import hr.podsjetnik.data.TaskRepository
 import hr.podsjetnik.reminders.AlarmScheduler
-import hr.podsjetnik.reminders.SpikeReminders
+import hr.podsjetnik.reminders.ReminderEngine
+import hr.podsjetnik.reminders.ReminderNotifications
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -26,9 +27,13 @@ class AppContainer(context: Context) {
 
     val taskRepository = TaskRepository(database, settingsStore, clock)
 
-    val alarmScheduler = AlarmScheduler(context)
-
-    val spikeReminders = SpikeReminders(context, database.alarmLogDao(), alarmScheduler, clock)
+    val reminderEngine = ReminderEngine(
+        repository = taskRepository,
+        alarmLog = database.alarmLogDao(),
+        scheduler = AlarmScheduler(context),
+        notifications = ReminderNotifications(context),
+        clock = clock,
+    )
 }
 
 /**

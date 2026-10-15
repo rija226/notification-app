@@ -3,7 +3,6 @@ package hr.podsjetnik.ui.spike
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
-import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
 
@@ -30,13 +29,5 @@ class SpikeHelpersTest {
     @Test
     fun `log time uses local zone`() {
         assertEquals("14. 10. 12:00:00", formatLogTime(scheduled, ZoneId.of("Europe/Zagreb")))
-    }
-
-    @Test
-    fun `night series is 16 tests every 30 minutes`() {
-        val delays = nightSeriesDelays()
-        assertEquals(16, delays.size)
-        assertEquals(Duration.ofMinutes(30), delays.first())
-        assertEquals(Duration.ofHours(8), delays.last())
     }
 }
