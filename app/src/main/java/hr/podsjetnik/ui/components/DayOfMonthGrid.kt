@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -35,9 +36,9 @@ fun DayOfMonthGrid(selected: Int?, onSelect: (Int) -> Unit, modifier: Modifier =
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
-                            .size(48.dp) // min touch target (HANDOFF §9)
+                            .size(44.dp)
                             .clip(CircleShape)
-                            .background(if (isSelected) colors.pri else colors.c1)
+                            .background(if (isSelected) colors.pri else Color.Transparent)
                             .selectable(selected = isSelected, onClick = { onSelect(day) })
                             .semantics { contentDescription = description },
                     ) {

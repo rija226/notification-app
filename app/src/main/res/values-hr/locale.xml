@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ponytail: all strings live in values/. This one marker makes "hr" a locale the app has resources for,
+  so Android applies Croatian plural rules (1 dan / 2 dana / 21 dan, "3 kasne") even when the phone
+  language is something else. Without it the device language's rules are used.
+-->
+<resources>
+    <string name="jezik" translatable="false">hr</string>
+</resources>

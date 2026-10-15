@@ -282,7 +282,7 @@ Loop for each phase: **reconnaissance → state planned changes → implement �
 4. **Detalji** (02): full layout + **⋮ menu** (Preskoči ovaj mjesec, Pauziraj/Nastavi), delete dialog, oldest-occurrence rule.
 5. **Novi / Uredi** (06a, 06b): full form incl. day grid, inline calendar, stepper, time chips, interval segments, live "Sljedeći termin".
 6. **Odgodi** sheet (03), **Odrađeno** dialog (04, auto-dismiss ~4 s), snackbar for Povremeni.
-7. Remove the spike screen (status rows move to Postavke in Phase 6).
+7. ~~Remove the spike screen~~ Kept in the Postavke tab until Phase 6 replaces it (status rows, test tasks, alarm log), so the tab isn't empty in between.
 
 **Tests (unit):** helpers for Danas grouping and sorting, header summary text, form validation, Detalji texts ("2 dana prije, u 09:00", "sve poslano 31. 10.").
 **Manual checklist**

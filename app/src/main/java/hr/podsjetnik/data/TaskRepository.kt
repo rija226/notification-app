@@ -7,7 +7,10 @@ import hr.podsjetnik.domain.Settings
 import hr.podsjetnik.domain.Task
 import hr.podsjetnik.domain.TaskType
 import hr.podsjetnik.domain.TaskWithOccurrences
+import hr.podsjetnik.domain.applyEdit
 import hr.podsjetnik.domain.markDone
+import hr.podsjetnik.domain.occurrenceOnResume
+import hr.podsjetnik.domain.skip
 import hr.podsjetnik.domain.occurrencesToCreate
 import hr.podsjetnik.domain.occurrencesToDeleteOnUndo
 import hr.podsjetnik.domain.reopen
@@ -49,6 +52,58 @@ class TaskRepository(
         }
         occurrenceDao.insertAll(first.map { it.toEntity() })
         id
+    }
+
+    suspend fun getTask(taskId: Long): TaskWithOccurrences? {
+        val task = taskDao.getById(taskId)?.toDomain() ?: return null
+        return TaskWithOccurrences(task, occurrenceDao.getForTask(taskId).map { it.toDomain() })
+    }
+
+    /** Saves an edited task and adjusts its occurrences (PRD §8.4, [applyEdit]). */
+    suspend fun updateTask(task: Task, oneOffDate: LocalDate?) {
+        db.withWriteTransaction {
+            val previous = taskDao.getById(task.id)?.toDomain() ?: return@withWriteTransaction
+            val now = clock.instant()
+            val existing = occurrenceDao.getForTask(task.id).map { it.toDomain() }
+            val edit = applyEdit(task, previous.recurrence, existing, oneOffDate, LocalDate.now(clock), now)
+            taskDao.update(task.copy(createdAt = previous.createdAt, updatedAt = now).toEntity())
+            if (edit.deleteIds.isNotEmpty()) occurrenceDao.deleteByIds(edit.deleteIds)
+            occurrenceDao.updateAll(edit.update.map { it.toEntity() })
+            occurrenceDao.insertAll(edit.insert.map { it.toEntity() })
+        }
+    }
+
+    /** Deletes a task with its whole history (PRD AC-1.3, H13). */
+    suspend fun deleteTask(taskId: Long) {
+        db.withWriteTransaction {
+            occurrenceDao.deleteForTask(taskId)
+            taskDao.delete(taskId)
+        }
+    }
+
+    /** Preskoči ovaj mjesec (PRD FR-3); the next occurrence follows in the next refresh. */
+    suspend fun skip(occurrenceId: Long) {
+        val occurrence = occurrenceDao.getById(occurrenceId)?.toDomain() ?: return
+        if (occurrence.status == OccurrenceStatus.OPEN) occurrenceDao.update(occurrence.skip(clock.instant()).toEntity())
+    }
+
+    /** Pauziraj (PRD FR-3, H7): open occurrences stay open and silent. */
+    suspend fun pause(taskId: Long) {
+        val task = taskDao.getById(taskId)?.toDomain() ?: return
+        val now = clock.instant()
+        taskDao.update(task.copy(pausedAt = now, updatedAt = now).toEntity())
+    }
+
+    /** Nastavi: reminders continue; months during the pause are not recorded. */
+    suspend fun resume(taskId: Long) {
+        db.withWriteTransaction {
+            val task = taskDao.getById(taskId)?.toDomain() ?: return@withWriteTransaction
+            val now = clock.instant()
+            val resumed = task.copy(pausedAt = null, updatedAt = now)
+            taskDao.update(resumed.toEntity())
+            val existing = occurrenceDao.getForTask(taskId).map { it.toDomain() }
+            occurrenceOnResume(resumed, existing, LocalDate.now(clock), now)?.let { occurrenceDao.insertAll(listOf(it.toEntity())) }
+        }
     }
 
     /** Creates missing occurrences for every task (PRD FR-3). Runs on each refresh. */

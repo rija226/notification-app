@@ -13,5 +13,14 @@ fun formatDate(date: LocalDate, today: LocalDate): String =
 fun formatShortDate(date: LocalDate, today: LocalDate, weekdaysShort: List<String>): String =
     "${weekdaysShort[date.dayOfWeek.value - 1]}, ${formatDate(date, today)}"
 
+/** "uto, 3. 11. 2026." — date field in the form always shows the year (screen 06b). */
+fun formatShortDateWithYear(date: LocalDate, weekdaysShort: List<String>): String =
+    "${weekdaysShort[date.dayOfWeek.value - 1]}, ${date.dayOfMonth}. ${date.monthValue}. ${date.year}."
+
+/** "Četvrtak, 5. studenoga" — Danas header (R.array.dani_dugo, R.array.mjeseci_genitiv). */
+fun formatLongDate(date: LocalDate, weekdaysLong: List<String>, monthsGenitive: List<String>): String =
+    "${weekdaysLong[date.dayOfWeek.value - 1].replaceFirstChar { it.uppercase() }}, " +
+        "${date.dayOfMonth}. ${monthsGenitive[date.monthValue - 1]}"
+
 /** 24 h "09:00". */
 fun formatTime(time: LocalTime): String = "%02d:%02d".format(time.hour, time.minute)

@@ -54,6 +54,16 @@ class SviZadaciHelpersTest {
     }
 
     @Test
+    fun `archive lists done one-offs, newest first`() {
+        val older = TaskWithOccurrences(task(id = 1, type = TaskType.ONE_OFF).copy(archivedAt = at("2026-11-01T10:00")), emptyList())
+        val newer = TaskWithOccurrences(task(id = 2, type = TaskType.ONE_OFF).copy(archivedAt = at("2026-11-04T10:00")), emptyList())
+        val active = TaskWithOccurrences(task(id = 3, type = TaskType.ONE_OFF), listOf(occurrence("2026-11-10", taskId = 3)))
+        val archive = buildArchive(listOf(older, active, newer), ZAGREB)
+        assertEquals(listOf(2L, 1L), archive.map { it.taskId })
+        assertEquals(date("2026-11-04"), archive.first().archivedOn)
+    }
+
+    @Test
     fun `paused task is flagged`() {
         val paused = TaskWithOccurrences(task(id = 1, pausedAt = now), listOf(occurrence("2026-11-30", taskId = 1)))
         assertTrue(buildRows(listOf(paused), TaskType.RECURRING, now, ZAGREB).single().paused)

@@ -4,6 +4,8 @@
 <resources>
 
     <string name="app_name">Podsjetnik</string>
+    <!-- Marker, see values-hr/locale.xml -->
+    <string name="jezik" translatable="false">hr</string>
 
     <!-- Navigation -->
     <string name="nav_danas">Danas</string>
@@ -113,6 +115,11 @@
         <item quantity="few">za rok %2$s, %1$d dana kasnije</item>
         <item quantity="other">za rok %2$s, %1$d dana kasnije</item>
     </plurals>
+    <string name="meni_preskoci">Preskoči ovaj mjesec</string>
+    <string name="meni_pauziraj">Pauziraj</string>
+    <string name="meni_nastavi">Nastavi</string>
+    <string name="cd_vise_opcija">Više opcija</string>
+    <string name="danas_sazetak_razmak">" · "</string>
     <string name="obrisi_zadatak">Obriši zadatak</string>
     <string name="obrisi_potvrda_naslov">Obrisati zadatak?</string>
     <string name="obrisi_potvrda_tekst">„%1$s” i svi njegovi podsjetnici bit će obrisani.</string>
@@ -336,6 +343,17 @@
         <item>studenoga</item>
         <item>prosinca</item>
     </string-array>
+    <!-- Inline calendar: weekday initials Monday-first, header "studeni 2026." -->
+    <string-array name="dani_slova">
+        <item>P</item>
+        <item>U</item>
+        <item>S</item>
+        <item>Č</item>
+        <item>P</item>
+        <item>S</item>
+        <item>N</item>
+    </string-array>
+    <string name="kalendar_mjesec">%1$s %2$d.</string>
     <string-array name="mjeseci">
         <item>siječanj</item>
         <item>veljača</item>

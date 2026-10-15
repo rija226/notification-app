@@ -49,6 +49,41 @@ fun occurrenceOnResume(task: Task, existing: List<Occurrence>, today: LocalDate,
     return Occurrence(taskId = task.id, dueDate = date, createdAt = now)
 }
 
+/** What an edit does to a task's occurrences (PRD §8.4). */
+data class EditResult(val update: List<Occurrence>, val deleteIds: List<Long>, val insert: List<Occurrence>)
+
+/**
+ * Edit with pending reminders (PRD §8.4): open occurrences restart from now (no reminder fires for past
+ * slots of the new schedule, snooze cleared). A one-off moves to [oneOffDate]. A changed recurrence rule
+ * replaces the open, not-yet-past occurrences with the new rule's first date on/after today; overdue ones stay.
+ */
+fun applyEdit(
+    edited: Task,
+    previousRule: RecurrenceRule?,
+    existing: List<Occurrence>,
+    oneOffDate: LocalDate?,
+    today: LocalDate,
+    now: Instant,
+): EditResult {
+    val open = existing.filter { it.status == OccurrenceStatus.OPEN }
+    val ruleChanged = edited.recurrence != null && edited.recurrence != previousRule
+    val replaced = if (ruleChanged) open.filter { it.dueDate >= today } else emptyList()
+    val update = (open - replaced.toSet()).map { occurrence ->
+        val moved = if (edited.type == TaskType.ONE_OFF && oneOffDate != null) occurrence.copy(dueDate = oneOffDate) else occurrence
+        moved.copy(lastNotifiedAt = now, snoozedUntil = null)
+    }
+    val insert = if (ruleChanged) {
+        val rule = checkNotNull(edited.recurrence)
+        val kept = existing - replaced.toSet()
+        var date = rule.firstOnOrAfter(today)
+        while (kept.any { it.dueDate == date }) date = rule.nextAfter(date)
+        listOf(Occurrence(taskId = edited.id, dueDate = date, lastNotifiedAt = now, createdAt = now))
+    } else {
+        emptyList()
+    }
+    return EditResult(update, replaced.map { it.id }, insert)
+}
+
 fun Occurrence.markDone(task: Task, now: Instant, zone: ZoneId): Occurrence = copy(
     status = OccurrenceStatus.DONE,
     completedAt = now,

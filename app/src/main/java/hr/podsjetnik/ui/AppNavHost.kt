@@ -52,9 +52,9 @@ data class DetaljiRoute(val taskId: Long)
 private data class TopLevel(val route: Any, val type: KClass<*>, @StringRes val label: Int, @DrawableRes val icon: Int)
 
 private val topLevels = listOf(
-    TopLevel(DanasRoute, DanasRoute::class, R.string.nav_danas, R.drawable.ic_today),
+    TopLevel(DanasRoute, DanasRoute::class, R.string.nav_danas, R.drawable.ic_event_available),
     TopLevel(SviZadaciRoute, SviZadaciRoute::class, R.string.nav_svi_zadaci, R.drawable.ic_list),
-    TopLevel(PostavkeRoute, PostavkeRoute::class, R.string.nav_postavke, R.drawable.ic_settings),
+    TopLevel(PostavkeRoute, PostavkeRoute::class, R.string.nav_postavke, R.drawable.ic_tune),
 )
 
 @Composable
@@ -71,6 +71,7 @@ fun AppNavHost(openTaskId: Long?, onOpenTaskHandled: () -> Unit) {
     val destination = backStackEntry?.destination
     val showBottomBar = topLevels.any { top -> destination?.hierarchy?.any { it.hasRoute(top.type) } == true }
     val openNewTask = { navController.navigate(UrediRoute()) }
+    val openTask = { id: Long -> navController.navigate(DetaljiRoute(id)) }
 
     Scaffold(
         containerColor = colors.bg,
@@ -101,11 +102,14 @@ fun AppNavHost(openTaskId: Long?, onOpenTaskHandled: () -> Unit) {
             startDestination = DanasRoute,
             modifier = Modifier.padding(padding).consumeWindowInsets(padding),
         ) {
-            composable<DanasRoute> { DanasScreen(onNewTask = openNewTask) }
-            composable<SviZadaciRoute> {
-                SviZadaciScreen(onNewTask = openNewTask, onOpenTask = { navController.navigate(DetaljiRoute(it)) })
+            composable<DanasRoute> { DanasScreen(onNewTask = openNewTask, onOpenTask = openTask) }
+            composable<SviZadaciRoute> { SviZadaciScreen(onNewTask = openNewTask, onOpenTask = openTask) }
+            composable<DetaljiRoute> {
+                DetaljiScreen(
+                    onBack = { navController.popBackStack() },
+                    onEdit = { navController.navigate(UrediRoute(it)) },
+                )
             }
-            composable<DetaljiRoute> { DetaljiScreen(onBack = { navController.popBackStack() }) }
             // ponytail: Postavke shows the Phase 1 spike screen until Phase 6.
             composable<PostavkeRoute> { SpikeScreen() }
             composable<UrediRoute> { UrediScreen(onClose = { navController.popBackStack() }) }

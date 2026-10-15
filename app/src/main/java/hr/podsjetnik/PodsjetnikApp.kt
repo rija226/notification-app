@@ -1,7 +1,9 @@
 package hr.podsjetnik
 
 import android.app.Application
+import android.app.LocaleManager
 import android.content.Context
+import android.os.LocaleList
 import hr.podsjetnik.reminders.NotificationFactory
 import hr.podsjetnik.reminders.SafetyNetWorker
 import kotlinx.coroutines.flow.combine
@@ -14,10 +16,20 @@ class PodsjetnikApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        useCroatian()
         container = AppContainer(this)
         NotificationFactory.createChannels(this)
         SafetyNetWorker.schedule(this)
         refreshOnEveryChange()
+    }
+
+    /**
+     * The UI is Croatian only, but plural forms ("1 dan / 2 dana / 21 dan", "3 kasne") and pickers follow the
+     * app locale. Pin it to hr so a phone set to another language still gets Croatian grammar.
+     */
+    private fun useCroatian() {
+        val locales = getSystemService(LocaleManager::class.java)
+        if (locales.applicationLocales.isEmpty) locales.applicationLocales = LocaleList.forLanguageTags("hr")
     }
 
     /**

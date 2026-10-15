@@ -52,10 +52,13 @@ class ReminderEngine(
         repostSilently(occurrenceId)
     }
 
-    /** Odgodi 1 sat (PRD FR-4). */
-    suspend fun onSnooze(occurrenceId: Long, duration: Duration = SNOOZE_FROM_NOTIFICATION) = mutex.withLock {
+    /** Odgodi 1 sat from the notification (PRD FR-4). */
+    suspend fun onSnooze(occurrenceId: Long) = snoozeUntil(occurrenceId, clock.instant() + SNOOZE_FROM_NOTIFICATION)
+
+    /** Odgodi from the app sheet: 1 sat / Večeras / Sutra ujutro. Never changes due date or status. */
+    suspend fun snoozeUntil(occurrenceId: Long, until: Instant) = mutex.withLock {
         notifications.cancelReminder(occurrenceId)
-        repository.snooze(occurrenceId, clock.instant() + duration)
+        repository.snooze(occurrenceId, until)
         refreshLocked()
     }
 

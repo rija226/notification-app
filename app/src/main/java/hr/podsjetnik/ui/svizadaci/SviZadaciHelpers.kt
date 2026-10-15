@@ -14,12 +14,16 @@ import java.time.ZoneId
 data class TaskRow(
     val taskId: Long,
     val title: String,
+    val type: TaskType,
     val rule: RecurrenceRule?,
     val dueDate: LocalDate?,
     val dueTime: LocalTime?,
     val state: OccurrenceState?,
     val paused: Boolean,
 )
+
+/** Arhiva row: a done one-off (HANDOFF §6.5). */
+data class ArchiveRow(val taskId: Long, val title: String, val archivedOn: LocalDate)
 
 /** Active (not archived) tasks of [type], sorted by due date ascending (HANDOFF §4.2). */
 fun buildRows(items: List<TaskWithOccurrences>, type: TaskType, now: Instant, zone: ZoneId): List<TaskRow> =
@@ -30,6 +34,7 @@ fun buildRows(items: List<TaskWithOccurrences>, type: TaskType, now: Instant, zo
             TaskRow(
                 taskId = item.task.id,
                 title = item.task.title,
+                type = item.task.type,
                 rule = item.task.recurrence,
                 dueDate = current?.dueDate,
                 dueTime = item.task.dueTime,
@@ -38,3 +43,10 @@ fun buildRows(items: List<TaskWithOccurrences>, type: TaskType, now: Instant, zo
             )
         }
         .sortedWith(compareBy<TaskRow, LocalDate?>(nullsLast()) { it.dueDate }.thenBy { it.title })
+
+/** Archived one-offs, newest first (HANDOFF §4.2). */
+fun buildArchive(items: List<TaskWithOccurrences>, zone: ZoneId): List<ArchiveRow> =
+    items
+        .mapNotNull { item -> item.task.archivedAt?.let { item to it } }
+        .sortedByDescending { it.second }
+        .map { (item, archivedAt) -> ArchiveRow(item.task.id, item.task.title, archivedAt.atZone(zone).toLocalDate()) }

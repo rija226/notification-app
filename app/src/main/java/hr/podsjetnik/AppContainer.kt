@@ -7,6 +7,7 @@ import hr.podsjetnik.data.TaskRepository
 import hr.podsjetnik.reminders.AlarmScheduler
 import hr.podsjetnik.reminders.ReminderEngine
 import hr.podsjetnik.reminders.ReminderNotifications
+import hr.podsjetnik.ui.TaskActions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -34,6 +35,8 @@ class AppContainer(context: Context) {
         notifications = ReminderNotifications(context),
         clock = clock,
     )
+
+    val taskActions = TaskActions(reminderEngine, taskRepository, clock)
 }
 
 /**

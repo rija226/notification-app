@@ -1,13 +1,18 @@
 package hr.podsjetnik.ui.uredi
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.navigation.toRoute
 import hr.podsjetnik.container
 import hr.podsjetnik.data.TaskRepository
+import hr.podsjetnik.domain.Task
 import hr.podsjetnik.domain.TaskType
+import hr.podsjetnik.ui.UrediRoute
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -24,37 +29,75 @@ data class UrediUiState(
     val today: LocalDate,
     val nextDue: LocalDate,
     val titleError: Boolean,
-)
+) {
+    val isEdit: Boolean get() = form.taskId != null
+}
 
-class UrediViewModel(private val repository: TaskRepository, private val clock: Clock) : ViewModel() {
+class UrediViewModel(
+    savedStateHandle: SavedStateHandle,
+    private val repository: TaskRepository,
+    private val clock: Clock,
+) : ViewModel() {
+    private val taskId = savedStateHandle.toRoute<UrediRoute>().taskId
     private val today = LocalDate.now(clock)
-    private val form = MutableStateFlow(initialForm(today))
+    private var original: Task? = null
+    private val form = MutableStateFlow<UrediForm?>(null)
 
-    val state: StateFlow<UrediUiState> = form
-        .map { it.toUiState() }
-        .stateIn(viewModelScope, SharingStarted.Eagerly, form.value.toUiState())
+    /** null while loading. */
+    val state: StateFlow<UrediUiState?> = form
+        .map { it?.toUiState() }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
-    fun onTitle(value: String) = form.update { it.copy(title = value) }
+    init {
+        viewModelScope.launch {
+            form.value = if (taskId != null) {
+                repository.getTask(taskId)?.let {
+                    original = it.task
+                    formFromTask(it, today)
+                }
+            } else {
+                initialForm(today, repository.currentSettings())
+            }
+        }
+    }
 
-    fun onType(value: TaskType) = form.update { it.copy(type = value) }
+    private fun edit(change: (UrediForm) -> UrediForm) = form.update { it?.let(change) }
 
-    fun onDay(value: Int) = form.update { it.copy(day = value, lastDay = false) }
+    fun onTitle(value: String) = edit { it.copy(title = value) }
 
-    fun onLastDay(value: Boolean) = form.update { it.copy(lastDay = value) }
+    /** Type is fixed after creation (PRD FR-1). */
+    fun onType(value: TaskType) = edit { if (it.taskId == null) it.copy(type = value) else it }
 
-    fun onDate(value: LocalDate) = form.update { it.copy(date = value) }
+    fun onDay(value: Int) = edit { it.copy(day = value, lastDay = false) }
 
-    fun onTime(value: LocalTime?) = form.update { it.copy(time = value) }
+    fun onLastDay(value: Boolean) = edit { it.copy(lastDay = value) }
+
+    fun onDate(value: LocalDate) = edit { it.copy(date = value) }
+
+    fun onTime(value: LocalTime?) = edit { it.copy(time = value) }
+
+    fun onEarlyStep(delta: Int) = edit { it.copy(earlyDays = stepEarlyDays(it.earlyDays, delta)) }
+
+    fun onEarlyTime(value: LocalTime) = edit { it.copy(earlyTime = value) }
+
+    fun onAddDayTime(value: LocalTime) = edit { it.copy(dayTimes = addDayTime(it.dayTimes, value)) }
+
+    fun onRemoveDayTime(value: LocalTime) = edit { it.copy(dayTimes = removeDayTime(it.dayTimes, value)) }
+
+    fun onInterval(hours: Int) = edit { it.copy(overdueIntervalHours = hours) }
+
+    fun onNote(value: String) = edit { it.copy(note = value) }
 
     fun save(onSaved: () -> Unit) {
-        val current = form.value
+        val current = form.value ?: return
         if (!isTitleValid(current.title)) {
-            form.update { it.copy(showErrors = true) }
+            edit { it.copy(showErrors = true) }
             return
         }
         viewModelScope.launch {
-            val task = buildTask(current, repository.currentSettings(), clock.instant())
-            repository.createTask(task, oneOffDate = current.date.takeIf { current.type == TaskType.ONE_OFF })
+            val task = buildTask(current, clock.instant(), original)
+            val oneOffDate = current.date.takeIf { task.type == TaskType.ONE_OFF }
+            if (original == null) repository.createTask(task, oneOffDate) else repository.updateTask(task, oneOffDate)
             onSaved()
         }
     }
@@ -70,7 +113,7 @@ class UrediViewModel(private val repository: TaskRepository, private val clock: 
         val Factory = viewModelFactory {
             initializer {
                 val container = checkNotNull(this[APPLICATION_KEY]).container
-                UrediViewModel(container.taskRepository, container.clock)
+                UrediViewModel(createSavedStateHandle(), container.taskRepository, container.clock)
             }
         }
     }

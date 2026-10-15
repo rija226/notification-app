@@ -9,6 +9,8 @@ import hr.podsjetnik.domain.OccurrenceState
 import hr.podsjetnik.domain.RecurrenceRule
 import hr.podsjetnik.domain.StatusKind
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 /** Chip text for a status (HANDOFF §4.2, PRD §5.4). */
 @Composable
@@ -35,3 +37,25 @@ fun ruleText(rule: RecurrenceRule): String = when (rule) {
 @Composable
 fun shortDateText(date: LocalDate, today: LocalDate): String =
     formatShortDate(date, today, stringArrayResource(R.array.dani_kratko).toList())
+
+/** "čet, 5. 11." or "uto, 3. 11. u 10:00". */
+@Composable
+fun dateTimeText(date: LocalDate, time: LocalTime?, today: LocalDate): String {
+    val dateText = shortDateText(date, today)
+    return time?.let { stringResource(R.string.meta_datum_vrijeme, dateText, formatTime(it)) } ?: dateText
+}
+
+/** Next reminder label: "11:00" today, otherwise "8. 11." (HANDOFF §6.1). */
+@Composable
+fun reminderLabel(at: LocalDateTime, today: LocalDate): String =
+    if (at.toLocalDate() == today) formatTime(at.toLocalTime()) else formatDate(at.toLocalDate(), today)
+
+/** "svaki sat" / "svaka 2 sata" / "svaka 4 sata". */
+@Composable
+fun intervalText(hours: Int): String = stringResource(
+    when (hours) {
+        1 -> R.string.interval_1h
+        2 -> R.string.interval_2h
+        else -> R.string.interval_4h
+    },
+)

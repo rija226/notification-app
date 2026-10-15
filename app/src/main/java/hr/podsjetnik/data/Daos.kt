@@ -27,6 +27,9 @@ interface TaskDao {
     @Update
     suspend fun update(task: TaskEntity)
 
+    @Query("DELETE FROM task WHERE id = :id")
+    suspend fun delete(id: Long)
+
     @Query("DELETE FROM task")
     suspend fun deleteAll()
 }
@@ -59,6 +62,9 @@ interface OccurrenceDao {
 
     @Query("UPDATE occurrence SET snoozedUntil = :until WHERE id = :id")
     suspend fun setSnoozedUntil(id: Long, until: Instant)
+
+    @Query("DELETE FROM occurrence WHERE taskId = :taskId")
+    suspend fun deleteForTask(taskId: Long)
 
     @Query("DELETE FROM occurrence WHERE id IN (:ids)")
     suspend fun deleteByIds(ids: List<Long>)
