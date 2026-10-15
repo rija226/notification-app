@@ -1,4 +1,4 @@
-package hr.podsjetnik.ui.spike
+package hr.podsjetnik.ui.dijagnostika
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -14,8 +14,10 @@ import hr.podsjetnik.data.TaskRepository
 import hr.podsjetnik.domain.Task
 import hr.podsjetnik.domain.TaskType
 import hr.podsjetnik.ui.components.formatTime
+import hr.podsjetnik.ui.postavke.hasLateAlarm
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.Clock
@@ -23,8 +25,10 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.temporal.ChronoUnit
 
-// ponytail: temporary debug screen in the Postavke tab until Phase 6 (status, alarm log, test tasks).
-class SpikeViewModel(
+data class DijagnostikaUiState(val log: List<AlarmLogEntity> = emptyList(), val lateAlarms: Boolean = false)
+
+/** Alarm log (PRD §8.6, H12) and test tools for checking reliability on the phone. */
+class DijagnostikaViewModel(
     private val repository: TaskRepository,
     private val clock: Clock,
     dao: AlarmLogDao,
@@ -32,8 +36,9 @@ class SpikeViewModel(
     /** Loads handoff sample data; null in release builds (no asset). */
     private val seed: (suspend () -> Unit)?,
 ) : ViewModel() {
-    val log: StateFlow<List<AlarmLogEntity>> = dao.observeRecent()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    val state: StateFlow<DijagnostikaUiState> = dao.observeRecent()
+        .map { DijagnostikaUiState(it, hasLateAlarm(it, clock.instant())) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), DijagnostikaUiState())
 
     val seedAvailable = seed != null
 
@@ -73,11 +78,11 @@ class SpikeViewModel(
                 } else {
                     null
                 }
-                SpikeViewModel(
+                DijagnostikaViewModel(
                     repository = container.taskRepository,
                     clock = container.clock,
                     dao = container.database.alarmLogDao(),
-                    testTitle = { app.getString(R.string.spike_test_naslov, formatTime(it)) },
+                    testTitle = { app.getString(R.string.dijagnostika_test_naslov, formatTime(it)) },
                     seed = seed,
                 )
             }

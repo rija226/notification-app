@@ -1,4 +1,4 @@
-package hr.podsjetnik.ui.spike
+package hr.podsjetnik.ui.dijagnostika
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -6,7 +6,7 @@ import org.junit.Test
 import java.time.Instant
 import java.time.ZoneId
 
-class SpikeHelpersTest {
+class DijagnostikaHelpersTest {
     private val scheduled = Instant.parse("2026-10-14T10:00:00Z")
 
     @Test

@@ -206,6 +206,14 @@
     <string name="dozvola_baterija">Optimizacija baterije</string>
     <string name="dozvola_baterija_ok">Aplikacija je izuzeta</string>
     <string name="dozvola_baterija_ne">Aplikacija nije izuzeta. Podsjetnici mogu kasniti ili izostati.</string>
+    <string name="dozvola_kanali_ne">Kanal za podsjetnike na dan ili za zakašnjele zadatke je isključen.</string>
+    <string name="dozvola_samsung">Samsung uspavljivanje</string>
+    <string name="dozvola_samsung_ok">Podsjetnik je izuzet</string>
+    <string name="dozvola_samsung_ne">Nije potvrđeno. Samsung može uspavati aplikaciju pa podsjetnici kasne.</string>
+    <string name="dozvola_tocnost">Točnost alarma</string>
+    <string name="dozvola_tocnost_ok">Podsjetnici stižu na vrijeme</string>
+    <string name="dozvola_tocnost_ne">U zadnjih 7 dana neki je podsjetnik kasnio više od 5 minuta.</string>
+    <string name="provjeri">Provjeri</string>
     <string name="status_u_redu">U redu</string>
     <string name="popravi">Popravi</string>
     <string name="tihi_sati_naslov">Tihi sati</string>
@@ -250,6 +258,26 @@
     <string name="ob3_napomena_postavke">U postavkama odaberi „Neograničeno”.</string>
     <string name="ob3_napomena_dijalog">Pojavit će se pitanje sustava. Odaberi „Dopusti”.</string>
     <string name="ob3_gumb">Izuzmi iz optimizacije</string>
+    <string name="ob3_primjer_naslov">Potrošnja baterije · Podsjetnik</string>
+    <string name="ob3_neograniceno">Neograničeno</string>
+    <string name="ob3_optimizirano">Optimizirano</string>
+    <string name="ob3_ograniceno">Ograničeno</string>
+    <!-- Samsung step (PRD H10, §10.5). ponytail: menu names are descriptive until the exact One UI labels are recorded. -->
+    <string name="samsung_naslov">Ne uspavljuj Podsjetnik</string>
+    <string name="samsung_tekst">Samsung uspavljuje aplikacije koje dugo ne otvaraš, i tada podsjetnici ne stižu. To se isključuje ručno u postavkama telefona.</string>
+    <string name="samsung_korak_1">1. Postavke → Baterija → Ograničenja rada u pozadini.</string>
+    <string name="samsung_korak_2">2. Isključi „Uspavaj aplikacije koje se ne koriste”.</string>
+    <string name="samsung_korak_3">3. Dodaj Podsjetnik u aplikacije koje se nikad ne uspavljuju. Ne smije biti među uspavanim ni duboko uspavanim aplikacijama.</string>
+    <string name="samsung_korak_4">4. Postavke aplikacije → Baterija → Neograničeno. Nikad ne zaustavljaj aplikaciju na silu.</string>
+    <string name="samsung_gumb">Otvori postavke</string>
+    <string name="samsung_potvrda">Napravio sam ovo</string>
+
+    <!-- Dijagnostika (PRD H12, §8.6) -->
+    <string name="dijagnostika_naslov">Dijagnostika</string>
+    <string name="dijagnostika_opis">Dnevnik alarma i provjera točnosti</string>
+    <string name="dijagnostika_upozorenje">U zadnjih 7 dana neki je podsjetnik kasnio više od 5 minuta.</string>
+    <string name="dijagnostika_prazno">Još nema okinutih alarma.</string>
+    <string name="dijagnostika_alati">Alati za testiranje</string>
 
     <!-- Notifications -->
     <string name="kanal_rani">Rani podsjetnici</string>
@@ -297,18 +325,14 @@
         <item quantity="other">Kasni ti %d zadataka</item>
     </plurals>
 
-    <!-- Temporary debug screen in the Postavke tab (removed in Phase 6) -->
-    <string name="spike_naslov">Testiranje i dijagnostika</string>
-    <string name="spike_postavke_aplikacije">Postavke aplikacije (Samsung, baterija)</string>
-    <string name="spike_test_2">Testni zadatak za 2 min</string>
-    <string name="spike_test_15">Testni zadatak za 15 min</string>
-    <string name="spike_test_naslov">Test %1$s</string>
-    <string name="spike_dnevnik">Dnevnik alarma</string>
-    <string name="spike_seed">Učitaj testne podatke (zamjenjuje sve)</string>
-    <string name="spike_problem">Problem</string>
-    <string name="spike_ceka">čeka</string>
-    <string name="spike_log_naslov">%1$s · obavijesti: %2$d</string>
-    <string name="spike_log_vremena">zakazano %1$s · stiglo %2$s</string>
+    <!-- Dijagnostika: test tools and alarm log rows -->
+    <string name="dijagnostika_test_2">Testni zadatak za 2 min</string>
+    <string name="dijagnostika_test_15">Testni zadatak za 15 min</string>
+    <string name="dijagnostika_test_naslov">Test %1$s</string>
+    <string name="dijagnostika_seed">Učitaj testne podatke (zamjenjuje sve)</string>
+    <string name="dijagnostika_ceka">čeka</string>
+    <string name="dijagnostika_log_naslov">%1$s · obavijesti: %2$d</string>
+    <string name="dijagnostika_log_vremena">zakazano %1$s · stiglo %2$s</string>
 
     <!-- Dates (custom formatter) -->
     <string-array name="dani_kratko">

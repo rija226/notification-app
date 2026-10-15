@@ -9,8 +9,6 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
 
-private const val MAX_DAY_TIMES = 6
-
 /** Form state for Novi / Uredi zadatak (HANDOFF §6.6). [taskId] null = new task. */
 data class UrediForm(
     val taskId: Long? = null,
@@ -66,17 +64,6 @@ fun ruleOf(form: UrediForm): RecurrenceRule =
 /** "Sljedeći termin" shown live under the rule. */
 fun nextDueDate(form: UrediForm, today: LocalDate): LocalDate =
     if (form.type == TaskType.RECURRING) ruleOf(form).firstOnOrAfter(today) else form.date
-
-/** Day times stay sorted, unique, at most 6 (HANDOFF §6.6). */
-fun addDayTime(times: List<LocalTime>, time: LocalTime): List<LocalTime> =
-    (times + time).distinct().sorted().take(MAX_DAY_TIMES)
-
-/** At least one day time always remains. */
-fun removeDayTime(times: List<LocalTime>, time: LocalTime): List<LocalTime> = if (times.size <= 1) times else times - time
-
-fun canAddDayTime(times: List<LocalTime>): Boolean = times.size < MAX_DAY_TIMES
-
-fun stepEarlyDays(days: Int, delta: Int): Int = (days + delta).coerceIn(0, 7)
 
 /** Form → task. Editing keeps the original's other fields (pause, archive, category, createdAt). */
 fun buildTask(form: UrediForm, now: Instant, original: Task? = null): Task {

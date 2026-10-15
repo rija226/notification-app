@@ -13,6 +13,10 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
+import hr.podsjetnik.ui.components.addDayTime
+import hr.podsjetnik.ui.components.canAddDayTime
+import hr.podsjetnik.ui.components.removeDayTime
+import hr.podsjetnik.ui.components.stepEarlyDays
 import org.junit.Test
 
 class UrediHelpersTest {

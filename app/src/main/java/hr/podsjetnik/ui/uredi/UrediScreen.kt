@@ -61,9 +61,11 @@ import hr.podsjetnik.domain.TaskType
 import hr.podsjetnik.ui.components.AddTimeChip
 import hr.podsjetnik.ui.components.DayOfMonthGrid
 import hr.podsjetnik.ui.components.InlineMonthCalendar
+import hr.podsjetnik.ui.components.IntervalSelector
 import hr.podsjetnik.ui.components.Stepper
 import hr.podsjetnik.ui.components.TimeChip
 import hr.podsjetnik.ui.components.TimePickerDialog
+import hr.podsjetnik.ui.components.canAddDayTime
 import hr.podsjetnik.ui.components.formatShortDateWithYear
 import hr.podsjetnik.ui.components.formatTime
 import hr.podsjetnik.ui.components.shortDateText
@@ -243,22 +245,6 @@ private fun TypeSelector(selected: TaskType, enabled: Boolean, onType: (TaskType
                 enabled = enabled || selected == type,
                 shape = SegmentedButtonDefaults.itemShape(index, options.size),
                 icon = { Icon(painterResource(icon), null, modifier = Modifier.size(18.dp)) },
-                modifier = Modifier.heightIn(min = 48.dp),
-            ) { Text(stringResource(label)) }
-        }
-    }
-}
-
-@Composable
-private fun IntervalSelector(selected: Int, onSelect: (Int) -> Unit) {
-    val options = listOf(1 to R.string.seg_1h, 2 to R.string.seg_2h, 4 to R.string.seg_4h)
-    SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
-        options.forEachIndexed { index, (hours, label) ->
-            SegmentedButton(
-                selected = selected == hours,
-                onClick = { onSelect(hours) },
-                shape = SegmentedButtonDefaults.itemShape(index, options.size),
-                icon = {},
                 modifier = Modifier.heightIn(min = 48.dp),
             ) { Text(stringResource(label)) }
         }

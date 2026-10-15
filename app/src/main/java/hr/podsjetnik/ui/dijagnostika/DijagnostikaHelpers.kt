@@ -1,4 +1,4 @@
-package hr.podsjetnik.ui.spike
+package hr.podsjetnik.ui.dijagnostika
 
 import java.time.Duration
 import java.time.Instant

@@ -167,6 +167,9 @@ class TaskRepository(
 
     suspend fun setLastSummaryDate(date: LocalDate) = settingsStore.update { it.copy(lastSummaryDate = date) }
 
+    /** Postavke / onboarding changes; the engine refreshes on every settings change. */
+    suspend fun updateSettings(change: (Settings) -> Settings) = settingsStore.update(change)
+
     /** Replaces all data: debug seed now, backup import in Phase 7. */
     suspend fun replaceAll(tasks: List<Task>, occurrences: List<Occurrence>, settings: Settings) {
         db.withWriteTransaction {

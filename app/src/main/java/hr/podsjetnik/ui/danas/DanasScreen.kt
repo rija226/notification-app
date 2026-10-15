@@ -23,6 +23,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -50,7 +51,10 @@ import hr.podsjetnik.ui.components.SectionHeader
 import hr.podsjetnik.ui.components.TypeTile
 import hr.podsjetnik.ui.components.formatLongDate
 import hr.podsjetnik.ui.components.shortDateText
+import hr.podsjetnik.ui.components.rememberDeviceStatus
 import hr.podsjetnik.ui.components.statusText
+import hr.podsjetnik.ui.postavke.BLOCKING_PROBLEMS
+import hr.podsjetnik.ui.postavke.problemsOf
 import hr.podsjetnik.ui.theme.LocalPodsjetnikColors
 import java.time.LocalDate
 
@@ -58,9 +62,12 @@ import java.time.LocalDate
 fun DanasScreen(
     onNewTask: () -> Unit,
     onOpenTask: (Long) -> Unit,
+    onOpenSettings: () -> Unit,
     viewModel: DanasViewModel = viewModel(factory = DanasViewModel.Factory),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val (status, _) = rememberDeviceStatus()
+    val blocked = problemsOf(status, samsungConfirmed = true, lateAlarms = false).any { it in BLOCKING_PROBLEMS }
     val outcome by viewModel.outcome.collectAsStateWithLifecycle()
     val snackbar = remember { SnackbarHostState() }
     val archivedText = stringResource(R.string.premjesteno_u_arhivu)
@@ -77,7 +84,9 @@ fun DanasScreen(
     }
 
     Box(modifier = Modifier.fillMaxSize().background(LocalPodsjetnikColors.current.bg)) {
-        state?.let { DanasContent(it.sections, it.now.toLocalDate(), onOpenTask, viewModel::done) }
+        state?.let {
+            DanasContent(it.sections, it.now.toLocalDate(), onOpenTask, viewModel::done, if (blocked) onOpenSettings else null)
+        }
         NewTaskFab(onNewTask, Modifier.align(Alignment.BottomEnd).padding(16.dp))
         SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).padding(bottom = 80.dp))
     }
@@ -89,12 +98,14 @@ private fun DanasContent(
     today: LocalDate,
     onOpenTask: (Long) -> Unit,
     onDone: (Long) -> Unit,
+    onFixProblems: (() -> Unit)?,
 ) {
     val colors = LocalPodsjetnikColors.current
     LazyColumn(
         contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 104.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
+        if (onFixProblems != null) item { ProblemBanner(onFixProblems) }
         item { Header(sections, today) }
         if (sections.isEmpty) {
             item { EmptyDanas(sections.next, today, onOpenTask) }
@@ -145,6 +156,29 @@ private fun LazyListScope.section(
     item { Box(Modifier.padding(top = 12.dp)) { header() } }
     items(cards, key = { it.occurrenceId }) { card ->
         TaskCard(card, today, onOpen = { onOpenTask(card.taskId) }, onDone = { onDone(card.occurrenceId) })
+    }
+}
+
+/** Slim red banner when something blocks reminders (handoff O5, PRD FR-9). */
+@Composable
+private fun ProblemBanner(onFix: () -> Unit) {
+    val colors = LocalPodsjetnikColors.current
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(colors.redCard, RoundedCornerShape(16.dp))
+            .border(BorderStroke(1.dp, colors.redLine), RoundedCornerShape(16.dp))
+            .padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 8.dp),
+    ) {
+        Icon(painterResource(R.drawable.ic_alert), null, tint = colors.red)
+        Text(
+            stringResource(R.string.banner_dozvole),
+            style = MaterialTheme.typography.bodyMedium,
+            color = colors.text,
+            modifier = Modifier.weight(1f).padding(horizontal = 12.dp),
+        )
+        TextButton(onClick = onFix) { Text(stringResource(R.string.popravi), color = colors.red, style = MaterialTheme.typography.labelLarge) }
     }
 }
 
